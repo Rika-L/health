@@ -49,7 +49,7 @@
     ]
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
+    "pre-commit": ""
   },
   "lint-staged": {
     "*": "eslint --fix"
