@@ -3,7 +3,9 @@ import vue from '@vitejs/plugin-vue'
 import autoprefixer from 'autoprefixer'
 import tailwind from 'tailwindcss'
 import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
+import vueDevTools from 'vite-plugin-vue-devtools'
 // https://vite.dev/config/
 export default defineConfig({
   css: {
@@ -21,9 +23,13 @@ export default defineConfig({
         /\.vue\.[tj]sx?\?vue/, // .vue (vue-loader with experimentalInlineMatchResource enabled)
         /\.md$/, // .md
       ],
-      imports: ['vue', 'vue-router', 'pinia'],
+      imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
       dts: 'src/auto-imports.d.ts',
     }),
+    Components({
+      dts: 'src/components.d.ts',
+    }),
+    vueDevTools({}),
   ],
   resolve: {
     alias: {

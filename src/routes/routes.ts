@@ -10,9 +10,14 @@ const routes: RouterOptions['routes'] = [
       {
         path: '/dashboard',
         name: 'Dashboard',
-        component: () => import('@/views/index.vue'),
+        component: () => import('@/pages/dashboard.vue'),
       },
     ],
+  },
+  {
+    path: '/authentication',
+    name: 'Authentication',
+    component: () => import('@/pages/authentication/index.vue'),
   },
 ]
 
