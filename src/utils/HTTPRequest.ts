@@ -8,7 +8,7 @@ export interface BaseType<T> {
 }
 
 const request = axios.create({
-  baseURL: import.meta.env.PUBLIC_URL ?? '',
+  baseURL: import.meta.env.VITE_REQUEST_BASE_URL,
   adapter: 'fetch',
 })
 
