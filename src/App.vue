@@ -2,5 +2,6 @@
 </script>
 
 <template>
+  <HTTPErrorProvider />
   <RouterView />
 </template>
