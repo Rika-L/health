@@ -45,7 +45,8 @@ let httpStatusErrorHandler: HttpStatusErrorHandler
 
 // 错误响应拦截器
 function responseErrorInterceptor(error: any) {
-  const { message } = error.response.data
+  console.log(error)
+  const message = error?.response?.data?.message
   httpStatusErrorHandler(message ?? 'Unknown error', error.status)
   return Promise.reject(error)
 }

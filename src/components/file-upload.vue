@@ -1,272 +1,107 @@
-<script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { cn } from '@/utils'
+<script lang="ts" setup>
 import HTTPRequest from '@/utils/HTTPRequest'
-import { AlertCircle, CheckCircle2, FileIcon, Upload, X } from 'lucide-vue-next'
-import { computed, ref } from 'vue'
+import { toast } from 'vue-sonner'
 
-interface FileUploadProps {
-  url: string
-  accept?: string
-  multiple?: boolean
-  maxSize?: number // 单位MB
-  class?: string
-  onSuccess?: (response: any) => void
-  onError?: (error: any) => void
-}
-
-const props = withDefaults(defineProps<FileUploadProps>(), {
-  accept: '*',
-  multiple: false,
-  maxSize: 10, // 默认最大10MB
-})
-
-const emits = defineEmits<{
-  (e: 'success', response: any): void
-  (e: 'error', error: any): void
+const props = defineProps<{
+  modelValue: string
+  disabled?: boolean
 }>()
 
-const fileInputRef = ref<HTMLInputElement | null>(null)
-const isDragging = ref(false)
-const files = ref<File[]>([])
-const uploading = ref(false)
-const uploadProgress = ref(0)
-const uploadStatus = ref<'idle' | 'uploading' | 'success' | 'error'>('idle')
-const errorMessage = ref('')
+const emit = defineEmits<{
+  'update:modelValue': [value: string]
+}>()
 
-// 计算文件大小的可读格式
-function formatFileSize(bytes: number): string {
-  if (bytes === 0)
-    return '0 Bytes'
-  const k = 1024
-  const sizes = ['Bytes', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return `${Number.parseFloat((bytes / k ** i).toFixed(2))} ${sizes[i]}`
-}
+const fileInput = ref<HTMLInputElement | null>(null)
+const previewUrl = ref(props.modelValue || '')
+const isUploading = ref(false)
 
-// 检查文件大小是否超过限制
-function isFileSizeValid(file: File): boolean {
-  const maxSizeBytes = props.maxSize * 1024 * 1024
-  return file.size <= maxSizeBytes
-}
-
-// 处理文件选择
-function handleFileSelect(event: Event) {
-  const input = event.target as HTMLInputElement
-  if (input.files) {
-    handleFiles(Array.from(input.files))
-  }
-}
-
-// 处理文件拖放
-function handleDrop(event: DragEvent) {
-  event.preventDefault()
-  isDragging.value = false
-
-  if (event.dataTransfer?.files) {
-    handleFiles(Array.from(event.dataTransfer.files))
-  }
-}
-
-// 处理文件
-function handleFiles(newFiles: File[]) {
-  // 重置状态
-  uploadStatus.value = 'idle'
-  errorMessage.value = ''
-
-  // 检查文件大小
-  const invalidFiles = newFiles.filter(file => !isFileSizeValid(file))
-  if (invalidFiles.length > 0) {
-    uploadStatus.value = 'error'
-    errorMessage.value = `文件大小超过限制 (${props.maxSize}MB): ${invalidFiles.map(f => f.name).join(', ')}`
-    return
-  }
-
-  // 更新文件列表
-  if (props.multiple) {
-    files.value = [...files.value, ...newFiles]
-  }
-  else {
-    files.value = newFiles.slice(0, 1) // 只取第一个文件
-  }
-}
-
-// 移除文件
-function removeFile(index: number) {
-  files.value.splice(index, 1)
-  // 如果没有文件了，重置状态
-  if (files.value.length === 0) {
-    uploadStatus.value = 'idle'
-    uploadProgress.value = 0
-  }
-}
-
-// 触发文件选择
-function triggerFileInput() {
-  fileInputRef.value?.click()
-}
-
-// 上传文件
-async function uploadFiles() {
-  if (files.value.length === 0 || uploading.value)
+async function handleFileChange(event: Event) {
+  const target = event.target as HTMLInputElement
+  if (!target.files || target.files.length === 0)
     return
 
-  uploading.value = true
-  uploadStatus.value = 'uploading'
-  uploadProgress.value = 0
+  const file = target.files[0]
+  if (!file.type.startsWith('image/')) {
+    alert('请上传图片文件')
+    return
+  }
 
   try {
+    isUploading.value = true
+
+    // 创建FormData对象用于文件上传
     const formData = new FormData()
+    formData.append('file', file)
 
-    files.value.forEach((file, index) => {
-      formData.append(props.multiple ? `file[${index}]` : 'file', file)
-    })
-
-    const response = await HTTPRequest({
-      url: props.url,
+    // 使用HTTPRequest调用后端API上传文件
+    const response = await HTTPRequest<{ url: string }>({
+      url: '/file/uploadAvatar',
       method: 'POST',
       data: formData,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-      onUploadProgress: (progressEvent) => {
-        if (progressEvent.total) {
-          uploadProgress.value = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-        }
-      },
     })
 
-    uploadStatus.value = 'success'
-    props.onSuccess?.(response)
-    emits('success', response)
+    // 从响应中获取文件URL
+    if (response.code === 200 && response.data) {
+      toast.success('上传成功')
+      const uploadPath = import.meta.env.VITE_REQUEST_BASE_URL + response.data
+      // 创建本地预览
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        if (e.target) {
+          previewUrl.value = e.target.result as string
+          emit('update:modelValue', uploadPath)
+        }
+      }
+      reader.readAsDataURL(file)
+    }
+    else {
+      throw new Error(response.message || '上传失败')
+    }
   }
   catch (error) {
-    uploadStatus.value = 'error'
-    errorMessage.value = '上传失败，请重试'
-    props.onError?.(error)
-    emits('error', error)
+    console.error('上传失败', error)
+    toast.error('上传失败, 请重试')
   }
   finally {
-    uploading.value = false
+    isUploading.value = false
   }
 }
 
-// 拖放区域的样式
-const dropzoneClasses = computed(() => {
-  return cn(
-    'border-2 border-dashed rounded-lg p-6 transition-colors',
-    'flex flex-col items-center justify-center gap-4',
-    isDragging.value ? 'border-primary bg-primary/5' : 'border-border',
-    uploadStatus.value === 'error' ? 'border-destructive bg-destructive/5' : '',
-    uploadStatus.value === 'success' ? 'border-success bg-success/5' : '',
-    props.class,
-  )
-})
-
-// 拖放事件处理
-function handleDragOver(event: DragEvent) {
-  event.preventDefault()
-  isDragging.value = true
-}
-
-function handleDragLeave() {
-  isDragging.value = false
+function triggerFileInput() {
+  if (props.disabled)
+    return
+  fileInput.value?.click()
 }
 </script>
 
 <template>
-  <div class="w-full">
-    <!-- 隐藏的文件输入 -->
-    <input
-      ref="fileInputRef"
-      type="file"
-      :accept="props.accept"
-      :multiple="props.multiple"
-      class="hidden"
-      @change="handleFileSelect"
-    >
-
-    <!-- 拖放区域 -->
+  <div class="relative">
     <div
-      :class="dropzoneClasses"
-      @dragover="handleDragOver"
-      @dragleave="handleDragLeave"
-      @drop="handleDrop"
+      class="w-24 h-24 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer overflow-hidden"
+      :class="{ 'opacity-50': disabled, 'hover:border-primary': !disabled }"
+      @click="triggerFileInput"
     >
-      <div v-if="files.length === 0" class="flex flex-col items-center justify-center text-center">
-        <Upload class="h-12 w-12 text-muted-foreground mb-2" />
-        <h3 class="text-lg font-medium">
-          拖拽文件到此处或点击上传
-        </h3>
-        <p class="text-sm text-muted-foreground mt-1">
-          支持{{ props.multiple ? '多个' : '单个' }}文件，最大{{ props.maxSize }}MB
-        </p>
-        <Button type="button" variant="outline" class="mt-4" @click="triggerFileInput">
-          选择文件
-        </Button>
+      <img v-if="previewUrl" :src="previewUrl" alt="Avatar" class="w-full h-full object-cover">
+      <div v-else class="text-center text-gray-500">
+        <div class="i-lucide-upload text-2xl mb-1" />
+        <div class="text-xs">
+          上传头像
+        </div>
       </div>
-
-      <!-- 文件列表 -->
-      <div v-else class="w-full space-y-4">
-        <div v-for="(file, index) in files" :key="index" class="flex items-center justify-between p-3 bg-background border rounded-md">
-          <div class="flex items-center gap-3">
-            <FileIcon class="h-6 w-6 text-primary" />
-            <div class="flex flex-col">
-              <span class="text-sm font-medium truncate max-w-[200px]">{{ file.name }}</span>
-              <span class="text-xs text-muted-foreground">{{ formatFileSize(file.size) }}</span>
-            </div>
-          </div>
-          <button
-            type="button"
-            class="text-muted-foreground hover:text-foreground transition-colors"
-            @click="removeFile(index)"
-          >
-            <X class="h-4 w-4" />
-          </button>
-        </div>
-
-        <!-- 上传状态 -->
-        <div v-if="uploadStatus === 'error'" class="flex items-center gap-2 text-destructive text-sm">
-          <AlertCircle class="h-4 w-4" />
-          <span>{{ errorMessage }}</span>
-        </div>
-
-        <div v-if="uploadStatus === 'success'" class="flex items-center gap-2 text-success text-sm">
-          <CheckCircle2 class="h-4 w-4" />
-          <span>上传成功</span>
-        </div>
-
-        <!-- 进度条 -->
-        <div v-if="uploadStatus === 'uploading'" class="w-full bg-muted rounded-full h-2.5 dark:bg-gray-700">
-          <div
-            class="bg-primary h-2.5 rounded-full transition-all duration-300"
-            :style="{ width: `${uploadProgress}%` }"
-          />
-          <div class="text-xs text-muted-foreground mt-1 text-right">
-            {{ uploadProgress }}%
-          </div>
-        </div>
-
-        <!-- 上传按钮 -->
-        <div class="flex justify-end gap-2">
-          <Button
-            v-if="uploadStatus !== 'uploading'"
-            type="button"
-            variant="outline"
-            @click="triggerFileInput"
-          >
-            {{ files.length > 0 ? '添加更多' : '选择文件' }}
-          </Button>
-          <Button
-            type="button"
-            variant="default"
-            :disabled="uploading || files.length === 0 || uploadStatus === 'success'"
-            @click="uploadFiles"
-          >
-            {{ uploading ? '上传中...' : '上传文件' }}
-          </Button>
-        </div>
+      <div v-if="isUploading" class="absolute rounded-full inset-0 bg-black/50 flex items-center justify-center text-white">
+        上传中...
       </div>
     </div>
+    <input
+      ref="fileInput"
+      type="file"
+      accept="image/*"
+      class="hidden"
+      :disabled="disabled"
+      @change="handleFileChange"
+    >
   </div>
 </template>
