@@ -35,6 +35,7 @@ declare module 'vue' {
     ChartLegend: typeof import('./components/ui/chart/ChartLegend.vue')['default']
     ChartSingleTooltip: typeof import('./components/ui/chart/ChartSingleTooltip.vue')['default']
     ChartTooltip: typeof import('./components/ui/chart/ChartTooltip.vue')['default']
+    DataTable: typeof import('./components/data-table.vue')['default']
     DonutChart: typeof import('./components/ui/chart-donut/DonutChart.vue')['default']
     DropdownMenu: typeof import('./components/ui/dropdown-menu/DropdownMenu.vue')['default']
     DropdownMenuCheckboxItem: typeof import('./components/ui/dropdown-menu/DropdownMenuCheckboxItem.vue')['default']
