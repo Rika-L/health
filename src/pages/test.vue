@@ -30,6 +30,8 @@ const columns: ColumnDef<Student>[] = [
 function test() {
   GET('/account/getAvatar/1')
 }
+
+const url = ref('')
 </script>
 
 <template>
@@ -37,4 +39,5 @@ function test() {
   <Button @click="test">
     test
   </Button>
+  <FileUpload v-model="url" />
 </template>

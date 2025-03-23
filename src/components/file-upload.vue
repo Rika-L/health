@@ -21,8 +21,18 @@ async function handleFileChange(event: Event) {
     return
 
   const file = target.files[0]
-  if (!file.type.startsWith('image/')) {
-    alert('请上传图片文件')
+
+  // 检查文件类型
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png']
+  if (!allowedTypes.includes(file.type)) {
+    toast.error('请上传JPG或PNG格式的图片')
+    return
+  }
+
+  // 检查文件大小（10MB = 10 * 1024 * 1024 bytes）
+  const maxSize = 10 * 1024 * 1024 // 10MB
+  if (file.size > maxSize) {
+    toast.error('文件大小不能超过10MB')
     return
   }
 
@@ -91,7 +101,7 @@ function triggerFileInput() {
           上传头像
         </div>
       </div>
-      <div v-if="isUploading" class="absolute rounded-full inset-0 bg-black/50 flex items-center justify-center text-white">
+      <div v-if="isUploading" class="absolute w-24 h-24 rounded-full inset-0 bg-black/50 flex items-center justify-center text-white">
         上传中...
       </div>
     </div>
