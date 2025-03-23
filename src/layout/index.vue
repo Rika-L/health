@@ -8,7 +8,9 @@ import AppSidebar from './AppSidebar.vue'
     <AppSidebar />
     <main class="w-full">
       <AppHeader />
-      <RouterView />
+      <div class="p-4">
+        <RouterView />
+      </div>
     </main>
   </SidebarProvider>
 </template>
