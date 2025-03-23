@@ -10,22 +10,22 @@ const items = [
     icon: SquareTerminal,
   },
   {
-    title: 'Inbox',
+    title: 'xxx管理',
     url: '#',
     icon: Inbox,
   },
   {
-    title: 'Calendar',
+    title: 'yyy管理',
     url: '#',
     icon: Calendar,
   },
   {
-    title: 'Search',
+    title: 'zzz管理',
     url: '#',
     icon: Search,
   },
   {
-    title: 'Settings',
+    title: '设置',
     url: '#',
     icon: Settings,
   },

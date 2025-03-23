@@ -7,6 +7,19 @@
     <div class="flex gap-2 items-center">
       <SidebarTrigger class="-ml-1" />
       <Separator orientation="vertical" class="mr-2 h-4" />
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem class="hidden md:block">
+            <BreadcrumbLink href="#">
+              控制台
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator class="hidden md:block" />
+          <BreadcrumbItem>
+            <BreadcrumbPage>xxx管理</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </div>
     <ModeToggle />
   </header>
