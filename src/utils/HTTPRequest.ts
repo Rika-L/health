@@ -5,6 +5,7 @@ export interface BaseType<T> {
   code: number
   message: string
   data: T
+  [property: string]: any
 }
 
 const request = axios.create({

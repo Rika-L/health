@@ -1,7 +1,10 @@
 <script lang="ts" setup>
+import { userLogin } from '@/api/user'
 import { FormField } from '@/components/ui/form'
+import { useUserStore } from '@/store/user'
 import { useForm } from 'vee-validate'
-import loginFormSchema from './schema'
+import { toast } from 'vue-sonner'
+import { loginFormSchema } from './schema'
 
 const $router = useRouter()
 
@@ -9,10 +12,23 @@ const { isFieldDirty, handleSubmit } = useForm({
   validationSchema: loginFormSchema,
 })
 
-const onSubmit = handleSubmit((values) => {
-  // TODO: 身份校验
-  console.log('Form submitted!', values)
-  $router.push('/dashboard')
+const userStore = useUserStore()
+
+const onSubmit = handleSubmit(async (values) => {
+  try {
+    const { code, message, data } = await userLogin(values)
+    if (code === 200) {
+      userStore.setUserInfo(data)
+      toast.success(`欢迎回来${data.username}`)
+      $router.push('/dashboard')
+    }
+    else {
+      toast.error(`错误:${code}`, { description: message })
+    }
+  }
+  catch (e) {
+    console.error(e)
+  }
 })
 </script>
 
@@ -56,11 +72,11 @@ const onSubmit = handleSubmit((values) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="0">
-                      老师
-                    </SelectItem>
                     <SelectItem value="1">
                       管理员
+                    </SelectItem>
+                    <SelectItem value="2">
+                      教师
                     </SelectItem>
                   </SelectGroup>
                 </SelectContent>

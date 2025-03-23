@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useSidebar } from '@/components/ui/sidebar'
+import { useUserStore } from '@/store/user'
 import {
   BadgeCheck,
   Bell,
@@ -17,6 +18,14 @@ const props = defineProps<{
   }
 }>()
 const { isMobile } = useSidebar()
+
+const userStore = useUserStore()
+const $router = useRouter()
+
+function logout() {
+  userStore.setUserInfo(null)
+  $router.push({ name: 'Authentication' })
+}
 </script>
 
 <template>
@@ -65,28 +74,28 @@ const { isMobile } = useSidebar()
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <Sparkles />
-              Upgrade to Pro
+              menu1
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <BadgeCheck />
-              Account
+              menu2
             </DropdownMenuItem>
             <DropdownMenuItem>
               <CreditCard />
-              Billing
+              menu3
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Bell />
-              Notifications
+              menu4
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem @click="logout">
             <LogOut />
-            Log out
+            退出登录
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
