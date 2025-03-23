@@ -1,20 +1,18 @@
 <script lang="ts" setup>
 import { FormField } from '@/components/ui/form'
-import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
-import * as z from 'zod'
+import loginFormSchema from './schema'
 
-const formSchema = toTypedSchema(z.object({
-  username: z.string().min(2, '用户名长度至少为 2').max(50, '用户名长度至多为 50'),
-  password: z.string().min(2, '密码长度至少为 2').max(50, '密码长度至多为 50'),
-}))
+const $router = useRouter()
 
 const { isFieldDirty, handleSubmit } = useForm({
-  validationSchema: formSchema,
+  validationSchema: loginFormSchema,
 })
 
 const onSubmit = handleSubmit((values) => {
+  // TODO: 身份校验
   console.log('Form submitted!', values)
+  $router.push('/dashboard')
 })
 </script>
 
@@ -48,24 +46,29 @@ const onSubmit = handleSubmit((values) => {
             <FormMessage class="absolute -bottom-5" />
           </FormItem>
         </FormField>
-        <div class="grid gap-2">
-          <Label for="password">身份</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="请选择一个登录身份" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="1">
-                  老师
-                </SelectItem>
-                <SelectItem value="2">
-                  管理员
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+        <FormField v-slot="{ componentField }" name="role" :validate-on-blur="!isFieldDirty">
+          <FormItem class="grid gap-0.5 relative">
+            <FormLabel>身份</FormLabel>
+            <FormControl>
+              <Select v-bind="componentField">
+                <SelectTrigger>
+                  <SelectValue placeholder="请选择一个登录身份" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="0">
+                      老师
+                    </SelectItem>
+                    <SelectItem value="1">
+                      管理员
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </FormControl>
+            <FormMessage class="absolute -bottom-5" />
+          </FormItem>
+        </FormField>
       </CardContent>
       <CardFooter>
         <Button class="w-full" type="submit">
