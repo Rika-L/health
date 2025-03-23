@@ -1,35 +1,6 @@
 <script setup lang="ts">
-import { Calendar, Inbox, Search, Settings, SquareTerminal } from 'lucide-vue-next'
+import menuItems from './menuItems'
 import NavUser from './NavUser.vue'
-
-// Menu items.
-const items = [
-  {
-    title: '控制台',
-    url: '/dashboard',
-    icon: SquareTerminal,
-  },
-  {
-    title: 'xxx管理',
-    url: '#',
-    icon: Inbox,
-  },
-  {
-    title: 'yyy管理',
-    url: '#',
-    icon: Calendar,
-  },
-  {
-    title: 'zzz管理',
-    url: '#',
-    icon: Search,
-  },
-  {
-    title: '设置',
-    url: '#',
-    icon: Settings,
-  },
-]
 
 const user = {
   name: 'xxxx',
@@ -45,7 +16,7 @@ const user = {
         <SidebarGroupLabel>学生运动与健康数据管理系统</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            <SidebarMenuItem v-for="item in items" :key="item.title">
+            <SidebarMenuItem v-for="item in menuItems" :key="item.title">
               <SidebarMenuButton as-child>
                 <RouterLink :to="item.url">
                   <component :is="item.icon" />

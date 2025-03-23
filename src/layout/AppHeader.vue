@@ -1,5 +1,12 @@
 <script lang="ts" setup>
+import menuItems from './menuItems'
 
+const $route = useRoute()
+
+function getMenuTitle(path: string) {
+  const item = menuItems.find(item => item.url === path)?.title
+  return item
+}
 </script>
 
 <template>
@@ -9,15 +16,20 @@
       <Separator orientation="vertical" class="mr-2 h-4" />
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem class="hidden md:block">
-            <BreadcrumbLink href="#">
-              控制台
-            </BreadcrumbLink>
+          <BreadcrumbItem v-if="$route.path === '/dashboard'" class="hidden md:block">
+            <BreadcrumbPage>控制台</BreadcrumbPage>
           </BreadcrumbItem>
-          <BreadcrumbSeparator class="hidden md:block" />
-          <BreadcrumbItem>
-            <BreadcrumbPage>xxx管理</BreadcrumbPage>
-          </BreadcrumbItem>
+          <template v-else>
+            <BreadcrumbItem class="hidden md:block">
+              <BreadcrumbLink href="/#/dashboard">
+                控制台
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator class="hidden md:block" />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{{ getMenuTitle($route.path) }}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </template>
         </BreadcrumbList>
       </Breadcrumb>
     </div>

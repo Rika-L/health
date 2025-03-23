@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 min-h-[calc(100vh-64px)]">
+  <div class="flex flex-col gap-4">
     <div class="grid auto-rows-min gap-4 sm:grid-cols-2 md:grid-cols-3">
       <Card class="aspect-video pb-10 pt-5 px-2">
         <Chart />

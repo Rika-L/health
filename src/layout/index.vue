@@ -8,7 +8,7 @@ import AppSidebar from './AppSidebar.vue'
     <AppSidebar />
     <main class="w-full">
       <AppHeader />
-      <div class="p-4">
+      <div class="p-4 min-h-[calc(100vh-64px)]">
         <RouterView />
       </div>
     </main>

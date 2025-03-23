@@ -12,6 +12,11 @@ const routes: RouterOptions['routes'] = [
         name: 'Dashboard',
         component: () => import('@/pages/dashboard.vue'),
       },
+      {
+        path: 'test',
+        name: 'Test',
+        component: () => import('@/pages/test.vue'),
+      },
     ],
   },
   {
@@ -19,6 +24,7 @@ const routes: RouterOptions['routes'] = [
     name: 'Authentication',
     component: () => import('@/pages/authentication/index.vue'),
   },
+  { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/pages/not-found.vue') },
 ]
 
 export default routes
