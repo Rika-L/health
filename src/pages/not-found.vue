@@ -2,7 +2,7 @@
 const $router = useRouter()
 
 function goHome() {
-  $router.push('/')
+  $router.push({ name: 'Dashboard' })
 }
 </script>
 

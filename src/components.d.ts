@@ -8,6 +8,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AppHeader: typeof import('./layout/AppHeader.vue')['default']
+    AppSidebar: typeof import('./layout/AppSidebar.vue')['default']
     AreaChart: typeof import('./components/ui/chart-area/AreaChart.vue')['default']
     Avatar: typeof import('./components/ui/avatar/Avatar.vue')['default']
     AvatarFallback: typeof import('./components/ui/avatar/AvatarFallback.vue')['default']
@@ -60,8 +62,10 @@ declare module 'vue' {
     HTTPErrorProvider: typeof import('./components/HTTP-error-provider.vue')['default']
     Input: typeof import('./components/ui/input/Input.vue')['default']
     Label: typeof import('./components/ui/label/Label.vue')['default']
+    Layout: typeof import('./layout/index.vue')['default']
     LineChart: typeof import('./components/ui/chart-line/LineChart.vue')['default']
     ModeToggle: typeof import('./components/mode-toggle.vue')['default']
+    NavUser: typeof import('./layout/NavUser.vue')['default']
     Pagination: typeof import('./components/ui/pagination/Pagination.vue')['default']
     PaginationEllipsis: typeof import('./components/ui/pagination/PaginationEllipsis.vue')['default']
     PaginationFirst: typeof import('./components/ui/pagination/PaginationFirst.vue')['default']

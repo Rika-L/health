@@ -1,5 +1,6 @@
 <script lang="tsx" setup>
 import type { ColumnDef } from '@tanstack/vue-table'
+import { GET } from '@/utils/HTTPRequest'
 
 interface Student {
   id: string
@@ -24,10 +25,16 @@ const columns: ColumnDef<Student>[] = [
     header: () => <div class="text-right">年龄</div>,
     cell: ({ row }) => <div>{row.getValue('age')}</div>,
   },
-
 ]
+
+function test() {
+  GET('/account/getAvatar/1')
+}
 </script>
 
 <template>
   <DataTable :columns="columns" :data="data" />
+  <Button @click="test">
+    test
+  </Button>
 </template>

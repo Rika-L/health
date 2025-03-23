@@ -1,4 +1,5 @@
 import type { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios'
+import { useUserStore } from '@/store/user'
 import axios from 'axios'
 
 export interface BaseType<T> {
@@ -13,21 +14,22 @@ const request = axios.create({
   adapter: 'fetch',
 })
 
-// 应用请求拦截器
 request.interceptors.request.use(requestInterceptor)
 
-// 应用响应拦截器
 request.interceptors.response.use(
-  // 正常响应处理
-  response => response,
+  (response) => {
+    if (response.data.code === 61004)
+      handleNoAuth()
+    return response
+  },
   // 网络错误处理
   responseErrorInterceptor,
 )
 
 // 请求拦截器
 function requestInterceptor(config: InternalAxiosRequestConfig) {
-  // TODO: 获取token
-  const token = ''
+  const useStore = useUserStore()
+  const token = useStore.token
   token && (config.headers.token = token)
   return config
 }
@@ -50,6 +52,10 @@ function responseErrorInterceptor(error: any) {
 
 function injectHttpStatusErrorHandler(handler: HttpStatusErrorHandler) {
   httpStatusErrorHandler = handler
+}
+
+function handleNoAuth() {
+  httpStatusErrorHandler('您的登录信息已过期,请重新登录', 401)
 }
 
 async function HTTPRequest<T>(config: AxiosRequestConfig) {
