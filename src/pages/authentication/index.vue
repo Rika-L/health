@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import LoginCard from './login-card.vue'
+import RegisterCard from './register-card.vue'
 </script>
 
 <template>
@@ -16,7 +17,7 @@ import LoginCard from './login-card.vue'
       <LoginCard />
     </TabsContent>
     <TabsContent value="register">
-      Change your password here.
+      <RegisterCard />
     </TabsContent>
   </Tabs>
 </template>

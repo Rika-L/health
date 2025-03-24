@@ -1,5 +1,4 @@
-import type { RegisterForm } from '@/pages/authentication/register-schema'
-import type { LoginForm } from '@/pages/authentication/schema'
+import type { LoginForm, RegisterForm } from '@/pages/authentication/schema'
 import { POST } from '@/utils/HTTPRequest'
 
 export interface UserInfo {
@@ -18,10 +17,10 @@ export function userLogin(form: LoginForm) {
 }
 
 export function userRegister(form: RegisterForm) {
-  // 注册时自动设置permission为1
   const registerData = {
     ...form,
+    role: Number(form.role),
     permission: 1,
   }
-  return POST<UserInfo>('/account/register', registerData)
+  return POST('/account/register', registerData)
 }

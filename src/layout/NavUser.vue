@@ -13,7 +13,7 @@ import {
 const props = defineProps<{
   user: {
     name: string
-    email: string
+    phoneNum: string
     avatar: string
   }
 }>()
@@ -45,7 +45,7 @@ function logout() {
             </Avatar>
             <div class="grid flex-1 text-left text-sm leading-tight">
               <span class="truncate font-semibold">{{ user.name }}</span>
-              <span class="truncate text-xs">{{ user.email }}</span>
+              <span class="truncate text-xs">{{ user.phoneNum }}</span>
             </div>
             <ChevronsUpDown class="ml-auto size-4" />
           </SidebarMenuButton>
@@ -66,32 +66,10 @@ function logout() {
               </Avatar>
               <div class="grid flex-1 text-left text-sm leading-tight">
                 <span class="truncate font-semibold">{{ user.name }}</span>
-                <span class="truncate text-xs">{{ user.email }}</span>
+                <span class="truncate text-xs">{{ user.phoneNum }}</span>
               </div>
             </div>
           </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <Sparkles />
-              menu1
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <BadgeCheck />
-              menu2
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <CreditCard />
-              menu3
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Bell />
-              menu4
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem @click="logout">
             <LogOut />

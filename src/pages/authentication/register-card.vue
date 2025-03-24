@@ -1,29 +1,30 @@
 <script lang="ts" setup>
-import { userLogin } from '@/api/user'
+import { userRegister } from '@/api/user'
 import { FormField } from '@/components/ui/form'
-import { useUserStore } from '@/store/user'
 import { useForm } from 'vee-validate'
 import { toast } from 'vue-sonner'
-import { loginFormSchema } from './schema'
-
-const $router = useRouter()
+import { registerFormSchema } from './schema'
 
 const { isFieldDirty, handleSubmit } = useForm({
-  validationSchema: loginFormSchema,
+  validationSchema: registerFormSchema,
 })
 
-const userStore = useUserStore()
-
 const [isLoading, toggleIsLoading] = useToggle(false)
+const avatarUrl = ref('')
 
 const onSubmit = handleSubmit(async (values) => {
+  if (!avatarUrl.value) {
+    toast.error('请上传头像')
+    return
+  }
   toggleIsLoading(true)
   try {
-    const { code, message, data } = await userLogin(values)
+    const { code, message } = await userRegister({
+      ...values,
+      avatar: avatarUrl.value,
+    })
     if (code === 200) {
-      userStore.setUserInfo(data)
-      toast.success(`欢迎回来，${data.username}!`)
-      $router.push('/dashboard')
+      toast.success(`注册成功，请登录`)
     }
     else {
       toast.error(`错误:${code}`, { description: message })
@@ -46,10 +47,13 @@ const onSubmit = handleSubmit(async (values) => {
           学生运动与健康数据管理系统
         </CardTitle>
         <CardDescription>
-          请输入用户名和密码以登录。
+          请填写以下信息完成注册。
         </CardDescription>
       </CardHeader>
       <CardContent class="grid gap-6">
+        <div class="flex justify-center mb-4">
+          <FileUpload v-model="avatarUrl" :disabled="isLoading" />
+        </div>
         <FormField v-slot="{ componentField }" name="username" :validate-on-blur="!isFieldDirty">
           <FormItem class="grid gap-0.5 relative">
             <FormLabel>用户名</FormLabel>
@@ -68,13 +72,31 @@ const onSubmit = handleSubmit(async (values) => {
             <FormMessage class="absolute -bottom-5" />
           </FormItem>
         </FormField>
+        <FormField v-slot="{ componentField }" name="confirmPassword" :validate-on-blur="!isFieldDirty">
+          <FormItem class="grid gap-0.5 relative">
+            <FormLabel>确认密码</FormLabel>
+            <FormControl>
+              <Input type="password" placeholder="请再次输入密码" v-bind="componentField" :disabled="isLoading" />
+            </FormControl>
+            <FormMessage class="absolute -bottom-5" />
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="phoneNum" :validate-on-blur="!isFieldDirty">
+          <FormItem class="grid gap-0.5 relative">
+            <FormLabel>手机号</FormLabel>
+            <FormControl>
+              <Input type="tel" placeholder="请输入手机号" v-bind="componentField" :disabled="isLoading" />
+            </FormControl>
+            <FormMessage class="absolute -bottom-5" />
+          </FormItem>
+        </FormField>
         <FormField v-slot="{ componentField }" name="role" :validate-on-blur="!isFieldDirty">
           <FormItem class="grid gap-0.5 relative">
             <FormLabel>身份</FormLabel>
             <FormControl>
               <Select v-bind="componentField" :disabled="isLoading">
                 <SelectTrigger>
-                  <SelectValue placeholder="请选择一个登录身份" />
+                  <SelectValue placeholder="请选择一个注册身份" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -94,7 +116,7 @@ const onSubmit = handleSubmit(async (values) => {
       </CardContent>
       <CardFooter>
         <Button class="w-full" type="submit" :disabled="isLoading">
-          登录
+          注册
         </Button>
       </CardFooter>
     </form>

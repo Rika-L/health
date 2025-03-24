@@ -12,7 +12,7 @@ const emit = defineEmits<{
 }>()
 
 const fileInput = ref<HTMLInputElement | null>(null)
-const previewUrl = ref(props.modelValue || '')
+const previewUrl = ref(props.modelValue ? import.meta.env.VITE_REQUEST_BASE_URL + props.modelValue : '')
 const isUploading = ref(false)
 
 async function handleFileChange(event: Event) {
@@ -44,7 +44,7 @@ async function handleFileChange(event: Event) {
     formData.append('file', file)
 
     // 使用HTTPRequest调用后端API上传文件
-    const response = await HTTPRequest<{ url: string }>({
+    const response = await HTTPRequest<string>({
       url: '/file/uploadAvatar',
       method: 'POST',
       data: formData,
@@ -56,7 +56,7 @@ async function handleFileChange(event: Event) {
     // 从响应中获取文件URL
     if (response.code === 200 && response.data) {
       toast.success('上传成功')
-      const uploadPath = import.meta.env.VITE_REQUEST_BASE_URL + response.data
+      const uploadPath = response.data
       // 创建本地预览
       const reader = new FileReader()
       reader.onload = (e) => {
@@ -101,9 +101,9 @@ function triggerFileInput() {
           上传头像
         </div>
       </div>
-      <div v-if="isUploading" class="absolute w-24 h-24 rounded-full inset-0 bg-black/50 flex items-center justify-center text-white">
-        上传中...
-      </div>
+      <Skeleton v-if="isUploading" class="absolute w-24 h-24 rounded-full inset-0 flex items-center justify-center text-white">
+        Uploading...
+      </Skeleton>
     </div>
     <input
       ref="fileInput"

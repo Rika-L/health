@@ -1,11 +1,14 @@
 <script setup lang="ts">
+import { useUserStore } from '@/store/user'
 import menuItems from './menuItems'
 import NavUser from './NavUser.vue'
 
+const userStore = useUserStore()
+
 const user = {
-  name: 'xxxx',
-  email: 'm@example.com',
-  avatar: '/avatars/shadcn.jpg',
+  name: userStore.userInfo?.username || '',
+  phoneNum: userStore.userInfo?.phoneNum || '',
+  avatar: userStore.avatar,
 }
 </script>
 
