@@ -16,6 +16,9 @@ export default defineConfig({
       plugins: [tailwind(), autoprefixer()],
     },
   },
+  server:{
+    open: true
+  },
   plugins: [
     vue(),
     AutoImport({

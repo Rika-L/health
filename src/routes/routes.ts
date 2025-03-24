@@ -36,6 +36,7 @@ const routes: RouterOptions['routes'] = [
     name: 'Authentication',
     component: () => import('@/pages/authentication/index.vue'),
   },
+  { path: '/401', name: 'NotAuthorized', component: () => import('@/pages/not-auth.vue') },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/pages/not-found.vue') },
 ]
 

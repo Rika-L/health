@@ -68,29 +68,6 @@ const onSubmit = handleSubmit(async (values) => {
             <FormMessage class="absolute -bottom-5" />
           </FormItem>
         </FormField>
-        <FormField v-slot="{ componentField }" name="role" :validate-on-blur="!isFieldDirty">
-          <FormItem class="grid gap-0.5 relative">
-            <FormLabel>身份</FormLabel>
-            <FormControl>
-              <Select v-bind="componentField" :disabled="isLoading">
-                <SelectTrigger>
-                  <SelectValue placeholder="请选择一个登录身份" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="1">
-                      管理员
-                    </SelectItem>
-                    <SelectItem value="2">
-                      教师
-                    </SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </FormControl>
-            <FormMessage class="absolute -bottom-5" />
-          </FormItem>
-        </FormField>
       </CardContent>
       <CardFooter>
         <Button class="w-full" type="submit" :disabled="isLoading">

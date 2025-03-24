@@ -3,6 +3,7 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import type { ComponentExposed } from 'vue-component-type-helpers'
 import { deleteTeacher } from '@/api/information/teacher'
 import DataTable from '@/components/data-table.vue'
+import TeacherEditDialog from '@/components/teacher-edit-dialog.vue'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
@@ -19,6 +20,9 @@ interface Student {
 }
 
 const dataTable = useTemplateRef<ComponentExposed<typeof DataTable> | null>('dataTable')
+
+const showEditDialog = ref(false)
+const selectedTeacher = ref<Student | null>(null)
 
 async function handleDelete(id: number) {
   const res = await deleteTeacher(id)
@@ -70,9 +74,19 @@ const columns: ColumnDef<Student>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
+      const teacher = row.original
       return (
         <div class="text-right flex gap-2 justify-end">
-          <Button>编辑</Button>
+          <Button variant="default">详情</Button>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              selectedTeacher.value = teacher
+              showEditDialog.value = true
+            }}
+          >
+            编辑
+          </Button>
           <Button
           // @ts-expect-error ts(2322) FIXME: Type '() => void' is not assignable to type '() => Promise<...>'.
             onClick={() => handleDelete(row.getValue('id'))}
@@ -89,4 +103,9 @@ const columns: ColumnDef<Student>[] = [
 
 <template>
   <DataTable ref="dataTable" path="/account/getTeacherAccountList" :columns="columns" />
+  <TeacherEditDialog
+    v-model:open="showEditDialog"
+    :teacher="selectedTeacher"
+    @teacher-updated="dataTable?.fetchData()"
+  />
 </template>
