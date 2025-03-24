@@ -13,9 +13,21 @@ const routes: RouterOptions['routes'] = [
         component: () => import('@/pages/dashboard.vue'),
       },
       {
-        path: 'test',
-        name: 'Test',
-        component: () => import('@/pages/test.vue'),
+        path: '/information',
+        name: 'Information',
+        redirect: '/information/student',
+        children: [
+          {
+            path: '/information/student',
+            name: 'Student',
+            component: () => import('@/pages/information/student/index.vue'),
+          },
+          {
+            path: '/information/teacher',
+            name: 'Teacher',
+            component: () => import('@/pages/information/teacher/index.vue'),
+          },
+        ],
       },
     ],
   },

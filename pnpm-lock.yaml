@@ -102,6 +102,9 @@ importers:
       lint-staged:
         specifier: ^15.5.0
         version: 15.5.0
+      rika-plugin:
+        specifier: ^1.0.3
+        version: 1.0.3(vite@6.2.2(@types/node@22.13.11)(jiti@2.4.2)(yaml@2.7.0))
       simple-git-hooks:
         specifier: ^2.12.1
         version: 2.12.1
@@ -3148,6 +3151,17 @@ packages:
 
   rfdc@1.4.1:
     resolution: {integrity: sha512-q1b3N5QkRUWUl7iyylaaj3kOpIT0N2i9MqIEQXP73GVsN9cw3fdx8X63cEmWhJGi2PPCF23Ijp7ktmd39rawIA==}
+
+  rika-plugin@1.0.3:
+    resolution: {integrity: sha512-KqJ79QEC4vm2+8A2u9IyG1FcsdgU4yWM8WAlCir2tPi6EssfC6/0ooJrcz+idVUHyDfgpmz5nBFxKvYqoUmk5w==}
+    peerDependencies:
+      '@rsbuild/core': '*'
+      vite: '*'
+    peerDependenciesMeta:
+      '@rsbuild/core':
+        optional: true
+      vite:
+        optional: true
 
   robust-predicates@3.0.2:
     resolution: {integrity: sha512-IXgzBWvWQwE6PrDI05OvmXUIruQTcoMDzRsOd5CDvHCVLcLHMTSYvOK5Cm46kWqlV3yAbuSpBZdJ5oP5OUoStg==}
@@ -7060,6 +7074,10 @@ snapshots:
   reusify@1.1.0: {}
 
   rfdc@1.4.1: {}
+
+  rika-plugin@1.0.3(vite@6.2.2(@types/node@22.13.11)(jiti@2.4.2)(yaml@2.7.0)):
+    optionalDependencies:
+      vite: 6.2.2(@types/node@22.13.11)(jiti@2.4.2)(yaml@2.7.0)
 
   robust-predicates@3.0.2: {}
 

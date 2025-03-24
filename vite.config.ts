@@ -2,6 +2,7 @@ import path from 'node:path'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import autoprefixer from 'autoprefixer'
+import Rika from 'rika-plugin/vite'
 import tailwind from 'tailwindcss'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -33,6 +34,7 @@ export default defineConfig({
     }),
     vueDevTools({}),
     vueJsx({}),
+    Rika(),
   ],
   resolve: {
     alias: {

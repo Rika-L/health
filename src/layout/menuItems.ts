@@ -1,4 +1,4 @@
-import { Calendar, Inbox, Search, Settings, SquareTerminal } from 'lucide-vue-next'
+import { BookType, Calendar, Notebook, Search, Settings, SquareTerminal } from 'lucide-vue-next'
 
 // Menu items.
 const menuItems = [
@@ -8,9 +8,14 @@ const menuItems = [
     icon: SquareTerminal,
   },
   {
-    title: '测试页面',
-    url: '/test',
-    icon: Inbox,
+    title: '学生信息管理',
+    url: '/information/student',
+    icon: BookType,
+  },
+  {
+    title: '教师信息管理',
+    url: '/information/teacher',
+    icon: Notebook,
   },
   {
     title: 'yyy管理',

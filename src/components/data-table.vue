@@ -5,6 +5,7 @@ import {
   PaginationList,
 } from '@/components/ui/pagination'
 
+import { GET } from '@/utils/HTTPRequest'
 import {
   FlexRender,
   getCoreRowModel,
@@ -12,18 +13,42 @@ import {
 } from '@tanstack/vue-table'
 
 const props = defineProps<{
+  path: string // API path
   columns: ColumnDef<TData>[]
 }>()
 
 const data = shallowRef<TData[]>([])
+
+const paginationDate = ref({ page: 1, pageSize: 10, total: 10 })
+
+interface PaginationData {
+  list: TData[]
+  pageNum: number
+  pageSize: number
+  total: number
+  totalPages: number
+}
+
+async function fetchData() {
+  try {
+    const response = (await GET<PaginationData>(props.path, { params: { pageNum: paginationDate.value.page, pageSize: paginationDate.value.pageSize } })).data
+    paginationDate.value.total = response.total
+    data.value = response.list
+  }
+  catch (error) {
+    console.error(error)
+  }
+}
+
+onMounted(() => {
+  fetchData()
+})
 
 const table = useVueTable({
   get data() { return data.value },
   get columns() { return props.columns },
   getCoreRowModel: getCoreRowModel(),
 })
-
-const paginationDate = ref({ page: 1, pageSize: 10,total:10 })
 </script>
 
 <template>
@@ -64,32 +89,42 @@ const paginationDate = ref({ page: 1, pageSize: 10,total:10 })
     <div class="flex justify-end">
       <Pagination
         v-slot="{ page }"
+        v-model:page="paginationDate.page"
         class="flex gap-4 items-center"
         :items-per-page="paginationDate.pageSize"
         :total="paginationDate.total"
         show-edges
-        :default-page="1"
-        @update:page="console.log(1)"
+        @update:page="() => {
+          fetchData()
+        }"
       >
-        <Select v-model="paginationDate.pageSize">
+        <div class="flex-none">
+          Total：{{ paginationDate.total }}
+        </div>
+        <Select
+          v-model="paginationDate.pageSize" @update:model-value="() => {
+            paginationDate.page = 1
+            fetchData()
+          }"
+        >
           <SelectTrigger class="gap-2">
             <SelectValue>
               {{ paginationDate.pageSize }}
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
-              <SelectItem value="10">
-                10
-              </SelectItem>
-              <SelectItem value="20">
-                20
-              </SelectItem>
-              <SelectItem value="40">
-                40
-              </SelectItem>
-              <SelectItem value="100">
-                100
-              </SelectItem>
+            <SelectItem value="10">
+              10
+            </SelectItem>
+            <SelectItem value="20">
+              20
+            </SelectItem>
+            <SelectItem value="40">
+              40
+            </SelectItem>
+            <SelectItem value="100">
+              100
+            </SelectItem>
           </SelectContent>
         </Select>
         <div class="flex-none">
