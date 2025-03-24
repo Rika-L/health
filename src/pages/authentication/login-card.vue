@@ -24,6 +24,7 @@ const onSubmit = handleSubmit(async (values) => {
       userStore.setUserInfo(data)
       toast.success(`欢迎回来，${data.username}!`)
       $router.push('/dashboard')
+      
     }
     else {
       toast.error(`错误:${code}`, { description: message })

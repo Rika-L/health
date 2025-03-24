@@ -1,16 +1,14 @@
 <script lang="tsx" setup>
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { ComponentExposed } from 'vue-component-type-helpers'
-import { deleteTeacher } from '@/api/information/teacher'
 import DataTable from '@/components/data-table.vue'
-import TeacherEditDialog from '@/components/teacher-edit-dialog.vue'
+import DeleteDialog from '@/components/delete-dialog.vue'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import { Button } from '@/components/ui/button'
-import { toast } from 'vue-sonner'
 
-interface Student {
+interface Teacher {
   id: number
   username: string
   phoneNum: string
@@ -21,21 +19,9 @@ interface Student {
 
 const dataTable = useTemplateRef<ComponentExposed<typeof DataTable> | null>('dataTable')
 
-const showEditDialog = ref(false)
-const selectedTeacher = ref<Student | null>(null)
+const deleteDialog = useTemplateRef<ComponentExposed<typeof DeleteDialog> | null>('deleteDialog')
 
-async function handleDelete(id: number) {
-  const res = await deleteTeacher(id)
-  if (res.code === 200) {
-    toast.success('删除成功')
-    dataTable.value?.fetchData()
-  }
-  else {
-    toast.error('删除失败', { description: res.message })
-  }
-}
-
-const columns: ColumnDef<Student>[] = [
+const columns: ColumnDef<Teacher>[] = [
   {
     accessorKey: 'id',
     header: () => <div>用户ID</div>,
@@ -74,22 +60,23 @@ const columns: ColumnDef<Student>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const teacher = row.original
+      const id = row.getValue('id')
       return (
         <div class="text-right flex gap-2 justify-end">
-          <Button variant="default">详情</Button>
           <Button
-            variant="secondary"
+            variant="default"
+            // @ts-expect-error ts(2322) FIXME: Type '() => void' is not assignable to type '() => Promise<...>'.
             onClick={() => {
-              selectedTeacher.value = teacher
-              showEditDialog.value = true
+              alert('开发中')
             }}
           >
-            编辑
+            详情
           </Button>
           <Button
           // @ts-expect-error ts(2322) FIXME: Type '() => void' is not assignable to type '() => Promise<...>'.
-            onClick={() => handleDelete(row.getValue('id'))}
+            onClick={() => {
+              deleteDialog.value?.open(`/account/deleteTeacherAccount/${id}`, dataTable.value?.fetchData)
+            }}
             variant="destructive"
           >
             删除
@@ -103,9 +90,5 @@ const columns: ColumnDef<Student>[] = [
 
 <template>
   <DataTable ref="dataTable" path="/account/getTeacherAccountList" :columns="columns" />
-  <TeacherEditDialog
-    v-model:open="showEditDialog"
-    :teacher="selectedTeacher"
-    @teacher-updated="dataTable?.fetchData()"
-  />
+  <DeleteDialog ref="deleteDialog" />
 </template>

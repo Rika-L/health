@@ -65,5 +65,5 @@ const columns: ColumnDef<Student>[] = [
 </script>
 
 <template>
-  <DataTable path="/account/getTeacherAccountList" :columns="columns" />
+  <DataTable path="/account/getStudentAccountList" :columns="columns" />
 </template>
