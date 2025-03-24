@@ -11,11 +11,13 @@ const menuItems = [
     title: '学生信息管理',
     url: '/information/student',
     icon: BookType,
+    auth: ['admin'],
   },
   {
     title: '教师信息管理',
     url: '/information/teacher',
     icon: Notebook,
+    auth: ['admin'],
   },
   {
     title: 'yyy管理',

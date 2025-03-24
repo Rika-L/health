@@ -15,6 +15,7 @@ const routes: RouterOptions['routes'] = [
       {
         path: '/information',
         name: 'Information',
+        meta: { auth: ['admin'] },
         redirect: '/information/student',
         children: [
           {
