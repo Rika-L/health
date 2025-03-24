@@ -1,9 +1,13 @@
 <script lang="tsx" setup>
 import type { ColumnDef } from '@tanstack/vue-table'
+import type { ComponentExposed } from 'vue-component-type-helpers'
+import { deleteTeacher } from '@/api/information/teacher'
+import DataTable from '@/components/data-table.vue'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import { Button } from '@/components/ui/button'
+import { toast } from 'vue-sonner'
 
 interface Student {
   id: number
@@ -12,6 +16,19 @@ interface Student {
   password: string
   avatar: string
   [property: string]: any
+}
+
+const dataTable = useTemplateRef<ComponentExposed<typeof DataTable> | null>('dataTable')
+
+async function handleDelete(id: number) {
+  const res = await deleteTeacher(id)
+  if (res.code === 200) {
+    toast.success('删除成功')
+    dataTable.value?.fetchData()
+  }
+  else {
+    toast.error('删除失败', { description: res.message })
+  }
 }
 
 const columns: ColumnDef<Student>[] = [
@@ -56,7 +73,13 @@ const columns: ColumnDef<Student>[] = [
       return (
         <div class="text-right flex gap-2 justify-end">
           <Button>编辑</Button>
-          <Button variant="destructive">删除</Button>
+          <Button
+          // @ts-expect-error ts(2322) FIXME: Type '() => void' is not assignable to type '() => Promise<...>'.
+            onClick={() => handleDelete(row.getValue('id'))}
+            variant="destructive"
+          >
+            删除
+          </Button>
         </div>
       )
     },
@@ -65,5 +88,5 @@ const columns: ColumnDef<Student>[] = [
 </script>
 
 <template>
-  <DataTable path="/account/getTeacherAccountList" :columns="columns" />
+  <DataTable ref="dataTable" path="/account/getTeacherAccountList" :columns="columns" />
 </template>

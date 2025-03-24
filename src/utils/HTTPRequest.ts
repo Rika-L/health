@@ -74,5 +74,10 @@ async function POST<T, K = any>(url: string, data?: K, config?: AxiosRequestConf
   return res.data
 }
 
-export { GET, injectHttpStatusErrorHandler, POST, request }
+async function DELETE<T>(url: string, config?: AxiosRequestConfig) {
+  const res = await request.delete<BaseType<T>>(url, config)
+  return res.data
+}
+
+export { DELETE, GET, injectHttpStatusErrorHandler, POST, request }
 export default HTTPRequest

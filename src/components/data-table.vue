@@ -49,6 +49,10 @@ const table = useVueTable({
   get columns() { return props.columns },
   getCoreRowModel: getCoreRowModel(),
 })
+
+defineExpose({ fetchData: async () => {
+  await fetchData()
+} })
 </script>
 
 <template>

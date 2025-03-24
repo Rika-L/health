@@ -2,12 +2,8 @@
 import { useSidebar } from '@/components/ui/sidebar'
 import { useUserStore } from '@/store/user'
 import {
-  BadgeCheck,
-  Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
-  Sparkles,
 } from 'lucide-vue-next'
 
 const props = defineProps<{
