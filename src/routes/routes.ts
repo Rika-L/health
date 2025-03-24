@@ -15,7 +15,6 @@ const routes: RouterOptions['routes'] = [
       {
         path: '/information',
         name: 'Information',
-        meta: { auth: ['admin'] },
         redirect: '/information/student',
         children: [
           {
@@ -27,6 +26,7 @@ const routes: RouterOptions['routes'] = [
             path: '/information/teacher',
             name: 'Teacher',
             component: () => import('@/pages/information/teacher/index.vue'),
+            meta: { auth: ['admin'] },
           },
         ],
       },
