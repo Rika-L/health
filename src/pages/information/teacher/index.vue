@@ -70,7 +70,7 @@ const columns: ColumnDef<Teacher>[] = [
             variant="default"
             // @ts-expect-error ts(2322) FIXME: Type '() => void' is not assignable to type '() => Promise<...>'.
             onClick={() => {
-              teacherDetailDialog.value?.open(id)
+              teacherDetailDialog.value?.open(id, dataTable.value?.fetchData)
             }}
           >
             详情

@@ -1,22 +1,58 @@
 <script lang="ts" setup>
 import type { TeacherDetail } from '@/api/information/teacher'
-import { getTeacherDetail } from '@/api/information/teacher'
+import { getTeacherDetail, putTeacherDetail } from '@/api/information/teacher'
 
 const [isOpen, toggleIsOpen] = useToggle(false)
 const teacherDetail = ref<TeacherDetail | null>(null)
-
-watchEffect(() => {
-  if (!isOpen.value) // 退出时清空
-    teacherDetail.value = null
-})
+const [isEdit, toggleIsEdit] = useToggle(false)
+const editedTeacherDetail = ref<TeacherDetail | null>(null)
+const [isLoading, toggleIsLoading] = useToggle(false)
+const callback = ref<(() => void) | null>(null)
 
 const { VITE_REQUEST_BASE_URL } = import.meta.env
 
+function startEdit() {
+  if (teacherDetail.value) {
+    editedTeacherDetail.value = { ...teacherDetail.value, teacherName: teacherDetail.value.teacherName || '', teacherGrade: teacherDetail.value.teacherGrade || '' }
+    toggleIsEdit(true)
+  }
+}
+
+function cancelEdit() {
+  toggleIsEdit(false)
+  editedTeacherDetail.value = null
+}
+
+async function saveEdit() {
+  if (editedTeacherDetail.value) {
+    toggleIsLoading(true)
+    try {
+      const res = await putTeacherDetail(editedTeacherDetail.value)
+      if (res) {
+        toggleIsOpen(false)
+        if (callback.value)
+          callback.value()
+      }
+    }
+    catch (e) {
+      console.error(e)
+    }
+    finally {
+      toggleIsLoading(false)
+    }
+  }
+}
+
 defineExpose({
-  open: async (id: number) => {
+  open: async (id: number, cb?: () => void) => {
+    // reset
+    toggleIsEdit(false)
+    teacherDetail.value = null
     toggleIsOpen(true)
     const data = await getTeacherDetail(id)
     teacherDetail.value = data
+    if (cb)
+      callback.value = cb
   },
 })
 </script>
@@ -29,7 +65,7 @@ defineExpose({
         <DialogDescription />
       </DialogHeader>
       <Skeleton v-if="!teacherDetail" class="h-64" />
-      <div v-else class="flex flex-col gap-4">
+      <div v-else-if="!isEdit" class="flex flex-col gap-4">
         <div class="flex gap-8">
           <Avatar class="size-20">
             <AvatarImage :src="VITE_REQUEST_BASE_URL + teacherDetail.teacherAvatar" alt="avatar" />
@@ -44,8 +80,45 @@ defineExpose({
         <div><Label>密码</Label>: {{ teacherDetail.password }}</div>
         <div><Label>电话</Label>: {{ teacherDetail.phoneNum }}</div>
       </div>
-      <DialogFooter class="justify-end">
-        <Button>编辑</Button>
+      <div v-else class="flex flex-col gap-4">
+        <div class="flex gap-8">
+          <FileUpload v-model:model-value="editedTeacherDetail!.teacherAvatar" :disabled="isLoading" />
+          <div class="flex flex-col justify-between gap-2">
+            <div>
+              <Label>教师姓名</Label>
+              <Input v-model="editedTeacherDetail!.teacherName as string" placeholder="请输入教师姓名" :disabled="isLoading" />
+            </div>
+            <div>
+              <Label>班级</Label>
+              <Input v-model="editedTeacherDetail!.teacherGrade as string" placeholder="请输入班级" :disabled="isLoading" />
+            </div>
+          </div>
+        </div>
+        <div>
+          <Label>账号名</Label>
+          <Input v-model="editedTeacherDetail!.username" placeholder="请输入账号" :disabled="isLoading" />
+        </div>
+        <div>
+          <Label>密码</Label>
+          <Input v-model="editedTeacherDetail!.password" placeholder="请输入密码" :disabled="isLoading" />
+        </div>
+        <div>
+          <Label>电话</Label>
+          <Input v-model="editedTeacherDetail!.phoneNum" placeholder="请输入电话" :disabled="isLoading" />
+        </div>
+      </div>
+      <DialogFooter class="justify-end gap-2">
+        <Button v-if="!isEdit" :disabled="isLoading" @click="startEdit()">
+          编辑
+        </Button>
+        <template v-else>
+          <Button variant="outline" :disabled="isLoading" @click="cancelEdit()">
+            取消
+          </Button>
+          <Button :disabled="isLoading" @click="saveEdit()">
+            保存
+          </Button>
+        </template>
       </DialogFooter>
     </DialogContent>
   </Dialog>
