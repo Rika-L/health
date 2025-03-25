@@ -139,6 +139,7 @@ declare module 'vue' {
     TabsContent: typeof import('./components/ui/tabs/TabsContent.vue')['default']
     TabsList: typeof import('./components/ui/tabs/TabsList.vue')['default']
     TabsTrigger: typeof import('./components/ui/tabs/TabsTrigger.vue')['default']
+    TeacherDetailDialog: typeof import('./components/information/teacher-detail-dialog.vue')['default']
     TeacherEditDialog: typeof import('./components/teacher-edit-dialog.vue')['default']
     Tooltip: typeof import('./components/ui/tooltip/Tooltip.vue')['default']
     TooltipContent: typeof import('./components/ui/tooltip/TooltipContent.vue')['default']
