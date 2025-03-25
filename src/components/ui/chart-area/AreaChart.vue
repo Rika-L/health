@@ -1,13 +1,14 @@
 <script setup lang="ts" generic="T extends Record<string, any>">
+import type { BulletLegendItemInterface } from '@unovis/ts'
+import type { Component } from 'vue'
 import type { BaseChartProps } from '.'
-import { cn } from '@/utils'
 import { ChartCrosshair, ChartLegend, defaultColors } from '@/components/ui/chart'
-import { type BulletLegendItemInterface, CurveType } from '@unovis/ts'
-import { Area, Axis, Line } from '@unovis/ts'
+import { cn } from '@/utils'
+import { Area, Axis, CurveType, Line } from '@unovis/ts'
 import { VisArea, VisAxis, VisLine, VisXYContainer } from '@unovis/vue'
 import { useMounted } from '@vueuse/core'
 import { useId } from 'reka-ui'
-import { type Component, computed, ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = withDefaults(defineProps<BaseChartProps<T> & {
   /**
@@ -83,7 +84,7 @@ function handleLegendItemClick(d: BulletLegendItemInterface, i: number) {
 
       <template v-for="(category, i) in categories" :key="category">
         <VisArea
-          :x="(d: Data, i: number) => i"
+          :x="(_d: Data, i: number) => i"
           :y="(d: Data) => d[category]"
           color="auto"
           :curve-type="curveType"
@@ -98,7 +99,7 @@ function handleLegendItemClick(d: BulletLegendItemInterface, i: number) {
 
       <template v-for="(category, i) in categories" :key="category">
         <VisLine
-          :x="(d: Data, i: number) => i"
+          :x="(_d: Data, i: number) => i"
           :y="(d: Data) => d[category]"
           :color="colors[i]"
           :curve-type="curveType"

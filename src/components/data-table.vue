@@ -19,7 +19,7 @@ const props = defineProps<{
 
 const data = shallowRef<TData[]>([])
 
-const paginationDate = ref({ page: 1, pageSize: 10, total: 10 })
+const paginationDate = ref({ page: 1, pageSize: 10, total: 0 })
 
 interface PaginationData {
   list: TData[]

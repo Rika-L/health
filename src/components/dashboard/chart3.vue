@@ -272,7 +272,7 @@ const data = [
     index="year"
     :show-legend="false"
     :categories="['Export Growth Rate', 'Import Growth Rate']"
-    :y-formatter="(tick, i) => {
+    :y-formatter="(tick) => {
       return typeof tick === 'number'
         ? `$ ${new Intl.NumberFormat('us').format(tick).toString()}`
         : ''

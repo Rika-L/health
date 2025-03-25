@@ -6,7 +6,7 @@ import {
   LogOut,
 } from 'lucide-vue-next'
 
-const props = defineProps<{
+const { user } = defineProps<{
   user: {
     name: string
     phoneNum: string
