@@ -3,6 +3,7 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import type { ComponentExposed } from 'vue-component-type-helpers'
 import DataTable from '@/components/data-table.vue'
 import DeleteDialog from '@/components/delete-dialog.vue'
+import StudentDetailDialog from '@/components/information/student-detail-dialog.vue'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
@@ -20,6 +21,8 @@ interface Student {
 const dataTable = useTemplateRef<ComponentExposed<typeof DataTable> | null>('dataTable')
 
 const deleteDialog = useTemplateRef<ComponentExposed<typeof DeleteDialog> | null>('deleteDialog')
+
+const studentDetailDialog = useTemplateRef<ComponentExposed<typeof StudentDetailDialog> | null>('studentDetailDialog')
 
 const columns: ColumnDef<Student>[] = [
   {
@@ -66,7 +69,7 @@ const columns: ColumnDef<Student>[] = [
           <Button
           // @ts-expect-error ts(2322) FIXME: Type '() => void' is not assignable to type '() => Promise<...>'.
             onClick={() => {
-              alert('is dev')
+              studentDetailDialog.value?.open(row.getValue('id'), dataTable.value?.fetchData)
             }}
           >
             编辑
@@ -89,5 +92,6 @@ const columns: ColumnDef<Student>[] = [
 
 <template>
   <DataTable ref="dataTable" path="/account/getStudentAccountList" :columns="columns" />
+  <StudentDetailDialog ref="studentDetailDialog" />
   <DeleteDialog ref="deleteDialog" />
 </template>

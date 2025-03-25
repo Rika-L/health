@@ -5,7 +5,7 @@ import { useVModel } from '@vueuse/core'
 
 const props = defineProps<{
   defaultValue?: string | number
-  modelValue?: string | number
+  modelValue?: string | number | null
   class?: HTMLAttributes['class']
 }>()
 
