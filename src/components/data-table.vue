@@ -29,7 +29,10 @@ interface PaginationData {
   totalPages: number
 }
 
+const [isLoading, toggleIsLoading] = useToggle(false)
+
 async function fetchData() {
+  toggleIsLoading(true)
   try {
     const response = (await GET<PaginationData>(props.path, { params: { pageNum: paginationDate.value.page, pageSize: paginationDate.value.pageSize } })).data
     paginationDate.value.total = response.total
@@ -37,6 +40,9 @@ async function fetchData() {
   }
   catch (error) {
     console.error(error)
+  }
+  finally {
+    toggleIsLoading(false)
   }
 }
 
@@ -70,7 +76,14 @@ defineExpose({ fetchData: async () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <template v-if="table.getRowModel().rows?.length">
+          <template v-if="isLoading">
+            <TableRow v-for="i in 5" :key="i">
+              <TableCell :colspan="columns.length" class="h-12 text-center">
+                <Skeleton class="h-24" />
+              </TableCell>
+            </TableRow>
+          </template>
+          <template v-else-if="table.getRowModel().rows?.length">
             <TableRow
               v-for="row in table.getRowModel().rows" :key="row.id"
               :data-state="row.getIsSelected() ? 'selected' : undefined"

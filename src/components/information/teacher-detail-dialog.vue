@@ -82,7 +82,7 @@ defineExpose({
       </div>
       <div v-else class="flex flex-col gap-4">
         <div class="flex gap-8">
-          <FileUpload v-model:model-value="editedTeacherDetail!.teacherAvatar" :disabled="isLoading" />
+          <AvatarUpload v-model:model-value="editedTeacherDetail!.teacherAvatar" :disabled="isLoading" />
           <div class="flex flex-col justify-between gap-2">
             <div>
               <Label>教师姓名</Label>

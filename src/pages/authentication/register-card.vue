@@ -52,7 +52,7 @@ const onSubmit = handleSubmit(async (values) => {
       </CardHeader>
       <CardContent class="grid gap-6">
         <div class="flex justify-center mb-4">
-          <FileUpload v-model="avatarUrl" :disabled="isLoading" />
+          <AvatarUpload v-model="avatarUrl" :disabled="isLoading" />
         </div>
         <FormField v-slot="{ componentField }" name="username" :validate-on-blur="!isFieldDirty">
           <FormItem class="grid gap-0.5 relative">
