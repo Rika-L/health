@@ -1,5 +1,8 @@
 <script lang="tsx" setup>
 import type { ColumnDef } from '@tanstack/vue-table'
+import type { ComponentExposed } from 'vue-component-type-helpers'
+import DataTable from '@/components/data-table.vue'
+import DeleteDialog from '@/components/delete-dialog.vue'
 import { Button } from '@/components/ui/button'
 
 interface SportInfo {
@@ -13,6 +16,10 @@ interface SportInfo {
   grade: string
   [property: string]: any
 }
+
+const dataTable = useTemplateRef<ComponentExposed<typeof DataTable> | null>('dataTable')
+
+const deleteDialog = useTemplateRef<ComponentExposed<typeof DeleteDialog> | null>('deleteDialog')
 
 const columns: ColumnDef<SportInfo>[] = [
   {
@@ -75,7 +82,12 @@ const columns: ColumnDef<SportInfo>[] = [
           >
             编辑
           </Button>
-          <Button variant="destructive">
+          <Button
+            variant="destructive"
+            onClick={() => {
+              deleteDialog.value?.open(`/deleteSportInfo/${sportId}`, dataTable.value?.fetchData)
+            }}
+          >
             删除
           </Button>
         </div>
@@ -86,5 +98,6 @@ const columns: ColumnDef<SportInfo>[] = [
 </script>
 
 <template>
-  <DataTable path="/getSportInfoByAccountId" :columns="columns" />
+  <DataTable ref="dataTable" path="/getSportInfoByAccountId" :columns="columns" />
+  <DeleteDialog ref="deleteDialog" />
 </template>
