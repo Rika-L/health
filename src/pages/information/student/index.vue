@@ -8,6 +8,7 @@ import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import { Button } from '@/components/ui/button'
+import { useUserStore } from '@/store/user'
 
 interface Student {
   id: number
@@ -86,10 +87,15 @@ const columns: ColumnDef<Student>[] = [
     },
   },
 ]
+
+const userStore = useUserStore()
 </script>
 
 <template>
-  <DataTable ref="dataTable" path="/account/getStudentAccountByGrade" :columns="columns" />
+  <DataTable
+    ref="dataTable"
+    :path="userStore.auth === 'admin' ? '/account/getStudentAccountList' : '/account/getStudentAccountByGrade'" :columns="columns"
+  />
   <StudentDetailDialog ref="studentDetailDialog" />
   <DeleteDialog ref="deleteDialog" />
 </template>

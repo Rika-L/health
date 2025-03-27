@@ -10,7 +10,7 @@ function getMenuTitle(path: string) {
 </script>
 
 <template>
-  <header class="flex h-16 shrink-0 items-center justify-between border-b px-4 sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xs backdrop-saturate-180">
+  <header class="flex h-16 shrink-0 items-center justify-between border-b px-4 sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-sm backdrop-saturate-150">
     <div class="flex gap-2 items-center">
       <SidebarTrigger class="-ml-1" />
       <Separator orientation="vertical" class="mr-2 h-4" />
