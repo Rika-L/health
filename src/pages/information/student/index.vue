@@ -89,7 +89,7 @@ const columns: ColumnDef<Student>[] = [
 </script>
 
 <template>
-  <DataTable ref="dataTable" path="/account/getStudentAccountList" :columns="columns" />
+  <DataTable ref="dataTable" path="/account/getStudentAccountByGrade" :columns="columns" />
   <StudentDetailDialog ref="studentDetailDialog" />
   <DeleteDialog ref="deleteDialog" />
 </template>
