@@ -68,7 +68,6 @@ const columns: ColumnDef<Teacher>[] = [
         <div class="text-right flex gap-2 justify-end">
           <Button
             variant="default"
-            // @ts-expect-error ts(2322) FIXME: Type '() => void' is not assignable to type '() => Promise<...>'.
             onClick={() => {
               teacherDetailDialog.value?.open(id, dataTable.value?.fetchData)
             }}
@@ -76,7 +75,6 @@ const columns: ColumnDef<Teacher>[] = [
             详情
           </Button>
           <Button
-          // @ts-expect-error ts(2322) FIXME: Type '() => void' is not assignable to type '() => Promise<...>'.
             onClick={() => {
               deleteDialog.value?.open(`/account/deleteTeacherAccount/${id}`, dataTable.value?.fetchData)
             }}

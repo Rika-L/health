@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { StudentDetail } from '@/api/information/student'
 import { getStudentDetail, putStudentDetail } from '@/api/information/student'
+import { formatSex } from '../../utils/formatSex'
 
 const [isOpen, toggleIsOpen] = useToggle(false)
 const studentDetail = ref<StudentDetail | null>(null)
@@ -80,13 +81,13 @@ defineExpose({
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div class="flex flex-col justify-between">
-            <div><Label>学生姓名</Label>: {{ studentDetail.studentName || '未设定' }}</div>
+            <div><Label>学生姓名</Label>: {{ studentDetail.studentName || "未设定" }}</div>
             <div><Label>班级</Label>: {{ studentDetail.studentGrade || '未设定' }}</div>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div><Label>年龄</Label>: {{ studentDetail.studentAge || '未设定' }}</div>
-          <div><Label>性别</Label>: {{ studentDetail.studentGender || '未设定' }}</div>
+          <div><Label>性别</Label>: {{ formatSex(studentDetail.studentGender) }}</div>
           <div><Label>身高</Label>: {{ studentDetail.studentHeight ? `${studentDetail.studentHeight} cm` : '未设定' }}</div>
           <div><Label>体重</Label>: {{ studentDetail.studentWeight ? `${studentDetail.studentWeight} kg` : '未设定' }}</div>
         </div>
@@ -169,3 +170,4 @@ defineExpose({
     </DialogContent>
   </Dialog>
 </template>
+../../utils/formatSex

@@ -12,7 +12,6 @@ router.beforeEach((to) => {
     return { name: 'Dashboard' }
   }
 
-  console.log(userStore.auth)
   const requiredAuth = to.meta.auth as string[] | undefined
   if (requiredAuth && !requiredAuth.includes(userStore.auth)) {
     return { name: 'NotAuthorized' }

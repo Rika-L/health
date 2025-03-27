@@ -30,6 +30,11 @@ const routes: RouterOptions['routes'] = [
           },
         ],
       },
+      {
+        path: "/sport",
+        name: "Sport",
+        component: () => import("@/pages/sport.vue"),
+      }
     ],
   },
   {

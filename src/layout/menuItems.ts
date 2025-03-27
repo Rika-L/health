@@ -1,4 +1,4 @@
-import { BookType, Notebook, SquareTerminal } from 'lucide-vue-next'
+import { Bike, BookType, Notebook, SquareTerminal } from 'lucide-vue-next'
 
 // Menu items.
 const menuItems = [
@@ -17,6 +17,11 @@ const menuItems = [
     url: '/information/teacher',
     icon: Notebook,
     auth: ['admin'],
+  },
+  {
+    title: '运动信息管理',
+    url: '/sport',
+    icon: Bike,
   },
 ]
 
