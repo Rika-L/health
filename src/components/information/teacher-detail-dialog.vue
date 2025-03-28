@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { TeacherDetail } from '@/api/information/teacher'
 import { getTeacherDetail, putTeacherDetail } from '@/api/information/teacher'
+import { useClassStore } from '@/store/class'
 
 const [isOpen, toggleIsOpen] = useToggle(false)
 const teacherDetail = ref<TeacherDetail | null>(null)
@@ -55,6 +56,8 @@ defineExpose({
       callback.value = cb
   },
 })
+
+const classStore = useClassStore()
 </script>
 
 <template>
@@ -90,7 +93,18 @@ defineExpose({
             </div>
             <div>
               <Label>班级</Label>
-              <Input v-model="editedTeacherDetail!.teacherGrade as string" placeholder="请输入班级" :disabled="isLoading" />
+              <Select v-model="editedTeacherDetail!.teacherGrade" :disabled="isLoading">
+                <SelectTrigger>
+                  <SelectValue placeholder="请选择班级" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem v-for="item in classStore.classList" :key="item" :value="item">
+                      {{ item }}
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>

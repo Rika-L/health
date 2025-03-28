@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { StudentDetail } from '@/api/information/student'
 import { getStudentDetail, putStudentDetail } from '@/api/information/student'
+import { useClassStore } from '@/store/class'
 import { formatSex } from '../../utils/formatSex'
 
 const [isOpen, toggleIsOpen] = useToggle(false)
@@ -19,7 +20,7 @@ function startEdit() {
       studentName: studentDetail.value.studentName || '',
       studentGrade: studentDetail.value.studentGrade || '',
       studentAge: studentDetail.value.studentAge || null,
-      studentGender: studentDetail.value.studentGender || '',
+      studentGender: String(studentDetail.value.studentGender) || '',
       studentHeight: studentDetail.value.studentHeight || null,
       studentWeight: studentDetail.value.studentWeight || null,
     }
@@ -36,7 +37,7 @@ async function saveEdit() {
   if (editedStudentDetail.value) {
     toggleIsLoading(true)
     try {
-      const res = await putStudentDetail(editedStudentDetail.value)
+      const res = await putStudentDetail({ ...editedStudentDetail.value, studentGender: Number(editedStudentDetail.value.studentGender) })
       if (res) {
         toggleIsOpen(false)
         if (callback.value)
@@ -64,6 +65,8 @@ defineExpose({
       callback.value = cb
   },
 })
+
+const classStore = useClassStore()
 </script>
 
 <template>
@@ -105,7 +108,18 @@ defineExpose({
             </div>
             <div>
               <Label>班级</Label>
-              <Input v-model="editedStudentDetail!.studentGrade as string" placeholder="请输入班级" :disabled="isLoading" />
+              <Select v-model="editedStudentDetail!.studentGrade" :disabled="isLoading">
+                <SelectTrigger>
+                  <SelectValue placeholder="请选择班级" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem v-for="item in classStore.classList" :key="item" :value="item">
+                      {{ item }}
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
