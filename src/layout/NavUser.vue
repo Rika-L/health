@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useSidebar } from '@/components/ui/sidebar'
+import { useClassStore } from '@/store/class'
 import { useUserStore } from '@/store/user'
 import {
   ChevronsUpDown,
@@ -16,10 +17,13 @@ const { user } = defineProps<{
 const { isMobile } = useSidebar()
 
 const userStore = useUserStore()
+const classStore = useClassStore()
 const $router = useRouter()
 
 function logout() {
   userStore.setUserInfo(null)
+  classStore.clearClassList()
+
   $router.push({ name: 'Authentication' })
 }
 </script>

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { userLogin } from '@/api/user'
 import { FormField } from '@/components/ui/form'
+import { useClassStore } from '@/store/class'
 import { useUserStore } from '@/store/user'
 import { useForm } from 'vee-validate'
 import { toast } from 'vue-sonner'
@@ -13,6 +14,7 @@ const { isFieldDirty, handleSubmit } = useForm({
 })
 
 const userStore = useUserStore()
+const classStore = useClassStore()
 
 const [isLoading, toggleIsLoading] = useToggle(false)
 
@@ -22,9 +24,10 @@ const onSubmit = handleSubmit(async (values) => {
     const { code, message, data } = await userLogin(values)
     if (code === 200) {
       userStore.setUserInfo(data)
+      // 获取班级列表
+      await classStore.fetchClassList()
       toast.success(`欢迎回来，${data.username}!`)
       $router.push('/dashboard')
-      
     }
     else {
       toast.error(`错误:${code}`, { description: message })
