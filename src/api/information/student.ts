@@ -11,7 +11,7 @@ export interface StudentDetail {
   studentName: string | null
   studentGrade: string | null
   studentAge: number | null
-  studentGender: string | null
+  studentGender: number | null
   studentHeight: number | null
   studentWeight: number | null
   username: string
