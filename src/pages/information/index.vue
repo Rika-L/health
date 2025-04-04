@@ -3,19 +3,19 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import type { ComponentExposed } from 'vue-component-type-helpers'
 import DataTable from '@/components/data-table.vue'
 import DeleteDialog from '@/components/delete-dialog.vue'
-import StudentDetailDialog from '@/components/information/student-detail-dialog.vue'
+// import StudentDetailDialog from '@/components/information/student-detail-dialog.vue'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import { Button } from '@/components/ui/button'
-import { useUserStore } from '@/store/user'
 
-interface Student {
-  id: number
+interface User {
+  userid: number
   username: string
   phoneNum: string
   password: string
   avatar: string
+  role: string
   [property: string]: any
 }
 
@@ -23,13 +23,11 @@ const dataTable = useTemplateRef<ComponentExposed<typeof DataTable> | null>('dat
 
 const deleteDialog = useTemplateRef<ComponentExposed<typeof DeleteDialog> | null>('deleteDialog')
 
-const studentDetailDialog = useTemplateRef<ComponentExposed<typeof StudentDetailDialog> | null>('studentDetailDialog')
-
-const columns: ColumnDef<Student>[] = [
+const columns: ColumnDef<User>[] = [
   {
-    accessorKey: 'id',
+    accessorKey: 'userid',
     header: () => <div>用户ID</div>,
-    cell: ({ row }) => <div>{row.getValue('id')}</div>,
+    cell: ({ row }) => <div>{row.getValue('userid')}</div>,
   },
   {
     accessorKey: 'username',
@@ -37,14 +35,14 @@ const columns: ColumnDef<Student>[] = [
     cell: ({ row }) => <div>{row.getValue('username')}</div>,
   },
   {
-    accessorKey: 'password',
-    header: () => <div>密码</div>,
-    cell: ({ row }) => <div>{row.getValue('password')}</div>,
+    accessorKey: 'classid',
+    header: () => <div>班级</div>,
+    cell: ({ row }) => <div>{row.getValue('classid')}</div>,
   },
   {
-    accessorKey: 'phoneNum',
-    header: () => <div>电话号码</div>,
-    cell: ({ row }) => <div>{row.getValue('phoneNum')}</div>,
+    accessorKey: 'role',
+    header: () => <div>角色</div>,
+    cell: ({ row }) => <div>{row.getValue('role')}</div>,
   },
   {
     accessorKey: 'avatar',
@@ -67,11 +65,7 @@ const columns: ColumnDef<Student>[] = [
       const id = row.getValue('id')
       return (
         <div class="text-right flex gap-2 justify-end">
-          <Button
-            onClick={() => {
-              studentDetailDialog.value?.open(row.getValue('id'), dataTable.value?.fetchData)
-            }}
-          >
+          <Button>
             编辑
           </Button>
           <Button
@@ -87,15 +81,13 @@ const columns: ColumnDef<Student>[] = [
     },
   },
 ]
-
-const userStore = useUserStore()
 </script>
 
 <template>
   <DataTable
     ref="dataTable"
-    :path="userStore.auth === 'admin' ? '/account/getStudentAccountList' : '/account/getStudentAccountByGrade'" :columns="columns"
+    path="/admin/query" :columns="columns"
   />
-  <StudentDetailDialog ref="studentDetailDialog" />
+  <!-- <StudentDetailDialog ref="studentDetailDialog" /> -->
   <DeleteDialog ref="deleteDialog" />
 </template>

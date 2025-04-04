@@ -15,26 +15,13 @@ const routes: RouterOptions['routes'] = [
       {
         path: '/information',
         name: 'Information',
-        redirect: '/information/student',
-        children: [
-          {
-            path: '/information/student',
-            name: 'Student',
-            component: () => import('@/pages/information/student/index.vue'),
-          },
-          {
-            path: '/information/teacher',
-            name: 'Teacher',
-            component: () => import('@/pages/information/teacher/index.vue'),
-            meta: { auth: ['admin'] },
-          },
-        ],
+        component: () => import('@/pages/information/index.vue'),
       },
       {
-        path: "/sport",
-        name: "Sport",
-        component: () => import("@/pages/sport.vue"),
-      }
+        path: '/sport',
+        name: 'Sport',
+        component: () => import('@/pages/sport.vue'),
+      },
     ],
   },
   {

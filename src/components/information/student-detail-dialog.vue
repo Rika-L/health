@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { StudentDetail } from '@/api/information/student'
 import { getStudentDetail, putStudentDetail } from '@/api/information/student'
-import { useClassStore } from '@/store/class'
 import { formatSex } from '../../utils/formatSex'
 
 const [isOpen, toggleIsOpen] = useToggle(false)
@@ -65,8 +64,6 @@ defineExpose({
       callback.value = cb
   },
 })
-
-const classStore = useClassStore()
 </script>
 
 <template>
@@ -114,7 +111,7 @@ const classStore = useClassStore()
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem v-for="item in classStore.classList" :key="item" :value="item">
+                    <SelectItem v-for="item in []" :key="item" :value="item">
                       {{ item }}
                     </SelectItem>
                   </SelectGroup>

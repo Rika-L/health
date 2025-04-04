@@ -11,6 +11,7 @@ import {
   getCoreRowModel,
   useVueTable,
 } from '@tanstack/vue-table'
+import { toast } from 'vue-sonner'
 
 const props = defineProps<{
   path: string // API path
@@ -19,14 +20,14 @@ const props = defineProps<{
 
 const data = shallowRef<TData[]>([])
 
-const paginationDate = ref({ page: 1, pageSize: 10, total: 0 })
+const paginationDate = ref({ pageNum: 1, pageSize: 10, total: 0 })
 
 interface PaginationData {
-  list: TData[]
+  records: TData[]
   pageNum: number
-  pageSize: number
+  size: number
   total: number
-  totalPages: number
+  [property: string]: any
 }
 
 const [isLoading, toggleIsLoading] = useToggle(false)
@@ -34,9 +35,14 @@ const [isLoading, toggleIsLoading] = useToggle(false)
 async function fetchData() {
   toggleIsLoading(true)
   try {
-    const response = (await GET<PaginationData>(props.path, { params: { pageNum: paginationDate.value.page, pageSize: paginationDate.value.pageSize } })).data
-    paginationDate.value.total = response.total
-    data.value = response.list
+    const response = (await GET<PaginationData>(props.path, { params: { pageNum: paginationDate.value.pageNum, pageSize: paginationDate.value.pageSize } }))
+    if (response.code === 200) {
+      paginationDate.value.total = response.data.total
+      data.value = response.data.records
+    }
+    else {
+      toast.error(response.msg)
+    }
   }
   catch (error) {
     console.error(error)
@@ -106,7 +112,7 @@ defineExpose({ fetchData: async () => {
     <div class="flex justify-end">
       <Pagination
         v-slot="{ page }"
-        v-model:page="paginationDate.page"
+        v-model:page="paginationDate.pageNum"
         class="flex gap-4 items-center"
         :items-per-page="paginationDate.pageSize"
         :total="paginationDate.total"
@@ -120,7 +126,7 @@ defineExpose({ fetchData: async () => {
         </div>
         <Select
           v-model="paginationDate.pageSize" @update:model-value="() => {
-            paginationDate.page = 1
+            paginationDate.pageNum = 1
             fetchData()
           }"
         >

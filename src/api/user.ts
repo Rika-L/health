@@ -3,17 +3,16 @@ import { POST } from '@/utils/HTTPRequest'
 
 export interface UserInfo {
   avatar: string
-  permission: number
-  phoneNum: string
-  regdate: string
-  role: number
+  userid: string
+  classid: string
+  role: 'ROLE_ADMIN' | 'ROLE_TEACHER' | 'ROLE_STUDENT'
   token: string
   username: string
   [property: string]: any
 }
 
 export function userLogin(form: LoginForm) {
-  return POST<UserInfo>('/account/login', form)
+  return POST<UserInfo>('/auth/login', form)
 }
 
 export function userRegister(form: RegisterForm) {

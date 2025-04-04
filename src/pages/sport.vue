@@ -100,4 +100,5 @@ const columns: ColumnDef<SportInfo>[] = [
 <template>
   <DataTable ref="dataTable" path="/getSportInfoByAccountId" :columns="columns" />
   <DeleteDialog ref="deleteDialog" />
+  <VideoUpload />
 </template>

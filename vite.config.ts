@@ -16,8 +16,10 @@ export default defineConfig({
       plugins: [tailwind(), autoprefixer()],
     },
   },
-  server:{
-    open: true
+  server: {
+    open: true,
+    host: true,
+    port: 8080,
   },
   plugins: [
     vue(),

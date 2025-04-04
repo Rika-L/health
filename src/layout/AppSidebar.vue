@@ -6,8 +6,8 @@ import NavUser from './NavUser.vue'
 const userStore = useUserStore()
 
 const user = {
-  name: userStore.userInfo?.username || '',
-  phoneNum: userStore.userInfo?.phoneNum || '',
+  username: userStore.userInfo?.username || '',
+  userid: userStore.userInfo?.userid || '',
   avatar: userStore.avatar,
 }
 

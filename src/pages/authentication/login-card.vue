@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { userLogin } from '@/api/user'
 import { FormField } from '@/components/ui/form'
-import { useClassStore } from '@/store/class'
 import { useUserStore } from '@/store/user'
 import { useForm } from 'vee-validate'
 import { toast } from 'vue-sonner'
@@ -14,23 +13,20 @@ const { isFieldDirty, handleSubmit } = useForm({
 })
 
 const userStore = useUserStore()
-const classStore = useClassStore()
 
 const [isLoading, toggleIsLoading] = useToggle(false)
 
 const onSubmit = handleSubmit(async (values) => {
   toggleIsLoading(true)
   try {
-    const { code, message, data } = await userLogin(values)
+    const { code, msg, data } = await userLogin(values)
     if (code === 200) {
       userStore.setUserInfo(data)
-      // 获取班级列表
-      await classStore.fetchClassList()
       toast.success(`欢迎回来，${data.username}!`)
       $router.push('/dashboard')
     }
     else {
-      toast.error(`错误:${code}`, { description: message })
+      toast.error(`错误:${code}`, { description: msg })
     }
   }
   catch (e) {
@@ -54,11 +50,11 @@ const onSubmit = handleSubmit(async (values) => {
         </CardDescription>
       </CardHeader>
       <CardContent class="grid gap-6">
-        <FormField v-slot="{ componentField }" name="username" :validate-on-blur="!isFieldDirty">
+        <FormField v-slot="{ componentField }" name="userid" :validate-on-blur="!isFieldDirty">
           <FormItem class="grid gap-0.5 relative">
-            <FormLabel>用户名</FormLabel>
+            <FormLabel>用户ID</FormLabel>
             <FormControl>
-              <Input type="text" placeholder="请输入用户名" v-bind="componentField" :disabled="isLoading" />
+              <Input type="text" placeholder="请输入用户ID" v-bind="componentField" :disabled="isLoading" />
             </FormControl>
             <FormMessage class="absolute -bottom-5" />
           </FormItem>

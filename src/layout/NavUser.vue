@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useSidebar } from '@/components/ui/sidebar'
-import { useClassStore } from '@/store/class'
 import { useUserStore } from '@/store/user'
 import {
   ChevronsUpDown,
@@ -9,20 +8,18 @@ import {
 
 const { user } = defineProps<{
   user: {
-    name: string
-    phoneNum: string
+    username: string
+    userid: string
     avatar: string
   }
 }>()
 const { isMobile } = useSidebar()
 
 const userStore = useUserStore()
-const classStore = useClassStore()
 const $router = useRouter()
 
 function logout() {
   userStore.setUserInfo(null)
-  classStore.clearClassList()
 
   $router.push({ name: 'Authentication' })
 }
@@ -38,14 +35,14 @@ function logout() {
             class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
           >
             <Avatar class="h-8 w-8 rounded-lg">
-              <AvatarImage :src="user.avatar" :alt="user.name" />
+              <AvatarImage :src="user.avatar" :alt="user.username" />
               <AvatarFallback class="rounded-lg">
                 CN
               </AvatarFallback>
             </Avatar>
             <div class="grid flex-1 text-left text-sm leading-tight">
-              <span class="truncate font-semibold">{{ user.name }}</span>
-              <span class="truncate text-xs">{{ user.phoneNum }}</span>
+              <span class="truncate font-semibold">{{ user.username }}</span>
+              <span class="truncate text-xs">{{ user.userid }}</span>
             </div>
             <ChevronsUpDown class="ml-auto size-4" />
           </SidebarMenuButton>
@@ -59,14 +56,14 @@ function logout() {
           <DropdownMenuLabel class="p-0 font-normal">
             <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
               <Avatar class="h-8 w-8 rounded-lg">
-                <AvatarImage :src="user.avatar" :alt="user.name" />
+                <AvatarImage :src="user.avatar" :alt="user.username" />
                 <AvatarFallback class="rounded-lg">
                   CN
                 </AvatarFallback>
               </Avatar>
               <div class="grid flex-1 text-left text-sm leading-tight">
-                <span class="truncate font-semibold">{{ user.name }}</span>
-                <span class="truncate text-xs">{{ user.phoneNum }}</span>
+                <span class="truncate font-semibold">{{ user.username }}</span>
+                <span class="truncate text-xs">{{ user.userid }}</span>
               </div>
             </div>
           </DropdownMenuLabel>

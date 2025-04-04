@@ -1,22 +1,16 @@
-import { Bike, BookType, Notebook, SquareTerminal } from 'lucide-vue-next'
+import { Bike, SquareTerminal, User } from 'lucide-vue-next'
 
 // Menu items.
-const menuItems = [
+const menuItems: { title: string, url: string, icon: any, auth?: string }[] = [
   {
     title: '控制台',
     url: '/dashboard',
     icon: SquareTerminal,
   },
   {
-    title: '学生信息管理',
-    url: '/information/student',
-    icon: BookType,
-  },
-  {
-    title: '教师信息管理',
-    url: '/information/teacher',
-    icon: Notebook,
-    auth: ['admin'],
+    title: '用户信息管理',
+    url: '/information',
+    icon: User,
   },
   {
     title: '运动信息管理',

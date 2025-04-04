@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export interface BaseType<T> {
   code: number
-  message: string
+  msg: string
   data: T
   [property: string]: any
 }
@@ -30,7 +30,7 @@ request.interceptors.response.use(
 function requestInterceptor(config: InternalAxiosRequestConfig) {
   const useStore = useUserStore()
   const token = useStore.token
-  token && (config.headers.token = token)
+  token && (config.headers.Authorization = token)
   return config
 }
 
@@ -46,7 +46,7 @@ let httpStatusErrorHandler: HttpStatusErrorHandler
 // 错误响应拦截器
 function responseErrorInterceptor(error: any) {
   console.log(error)
-  const message = error?.response?.data?.message
+  const message = error?.response?.data?.msg
   httpStatusErrorHandler(message ?? 'Unknown error', error.status)
   return Promise.reject(error)
 }
