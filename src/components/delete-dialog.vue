@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { DELETE } from '@/utils/HTTPRequest'
+import { POST } from '@/utils/HTTPRequest'
 import { toast } from 'vue-sonner'
 
 const [isOpen, toggleIsOpen] = useToggle(false)
@@ -21,7 +21,7 @@ async function handleDelete() {
     toast.error('内部错误')
     return
   }
-  const res = await DELETE(deleteUrl.value)
+  const res = await POST(deleteUrl.value)
   if (res.code === 200) {
     toast.success('操作成功')
     toggleIsOpen(false)

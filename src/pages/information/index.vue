@@ -8,6 +8,7 @@ import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import { Button } from '@/components/ui/button'
+import { Search } from 'lucide-vue-next'
 
 interface User {
   userid: number
@@ -62,7 +63,7 @@ const columns: ColumnDef<User>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const id = row.getValue('id')
+      const userid = row.getValue('userid')
       return (
         <div class="text-right flex gap-2 justify-end">
           <Button>
@@ -71,7 +72,7 @@ const columns: ColumnDef<User>[] = [
           <Button
             variant="destructive"
             onClick={() => {
-              deleteDialog.value?.open(`/account/deleteStudentAccount/${id}`, dataTable.value?.fetchData)
+              deleteDialog.value?.open(`/admin/delete/${userid}`, dataTable.value?.fetchData)
             }}
           >
             删除
@@ -81,13 +82,40 @@ const columns: ColumnDef<User>[] = [
     },
   },
 ]
+
+const search = reactive({ keyword: '' })
+
+function resetSearch() {
+  search.keyword = ''
+  dataTable.value?.fetchData()
+}
 </script>
 
 <template>
-  <DataTable
-    ref="dataTable"
-    path="/admin/query" :columns="columns"
-  />
+  <div class="flex flex-col gap-4">
+    <div class="flex gap-2">
+      <div class="relative w-full max-w-sm items-center">
+        <Input id="search" v-model="search.keyword" type="text" placeholder="Search..." class="pl-10" />
+        <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
+          <Search class="size-6 text-muted-foreground" />
+        </span>
+      </div>
+      <Button variant="secondary" @click="resetSearch">
+        Reset
+      </Button>
+      <Button @click="dataTable?.fetchData">
+        Search
+      </Button>
+    </div>
+
+    <DataTable
+      ref="dataTable"
+      path="/admin/query"
+      :columns="columns"
+      :search="search"
+    />
+  </div>
+
   <!-- <StudentDetailDialog ref="studentDetailDialog" /> -->
   <DeleteDialog ref="deleteDialog" />
 </template>

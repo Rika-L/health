@@ -16,6 +16,9 @@ import { toast } from 'vue-sonner'
 const props = defineProps<{
   path: string // API path
   columns: ColumnDef<TData>[]
+  search?: {
+    [property: string]: string
+  } // 用于搜索的字段
 }>()
 
 const data = shallowRef<TData[]>([])
@@ -35,7 +38,11 @@ const [isLoading, toggleIsLoading] = useToggle(false)
 async function fetchData() {
   toggleIsLoading(true)
   try {
-    const response = (await GET<PaginationData>(props.path, { params: { pageNum: paginationDate.value.pageNum, pageSize: paginationDate.value.pageSize } }))
+    const response = (await GET<PaginationData>(props.path, { params: {
+      pageNum: paginationDate.value.pageNum,
+      pageSize: paginationDate.value.pageSize,
+      ...props.search,
+    } }))
     if (response.code === 200) {
       paginationDate.value.total = response.data.total
       data.value = response.data.records
