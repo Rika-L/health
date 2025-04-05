@@ -3,7 +3,7 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import type { ComponentExposed } from 'vue-component-type-helpers'
 import DataTable from '@/components/data-table.vue'
 import DeleteDialog from '@/components/delete-dialog.vue'
-// import StudentDetailDialog from '@/components/information/student-detail-dialog.vue'
+import EditUserDialog from '@/components/edit-user-dialog.vue'
 import Avatar from '@/components/ui/avatar/Avatar.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Search } from 'lucide-vue-next'
 
 interface User {
-  userid: number
+  userid: string
   username: string
   phoneNum: string
   password: string
@@ -23,6 +23,8 @@ interface User {
 const dataTable = useTemplateRef<ComponentExposed<typeof DataTable> | null>('dataTable')
 
 const deleteDialog = useTemplateRef<ComponentExposed<typeof DeleteDialog> | null>('deleteDialog')
+
+const editUserDialog = useTemplateRef<ComponentExposed<typeof EditUserDialog> | null>('editUserDialog')
 
 const columns: ColumnDef<User>[] = [
   {
@@ -64,9 +66,14 @@ const columns: ColumnDef<User>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const userid = row.getValue('userid')
+      const user = row.original
       return (
         <div class="text-right flex gap-2 justify-end">
-          <Button>
+          <Button
+            onClick={() => {
+              editUserDialog.value?.open(user, dataTable.value?.fetchData)
+            }}
+          >
             编辑
           </Button>
           <Button
@@ -116,6 +123,6 @@ function resetSearch() {
     />
   </div>
 
-  <!-- <StudentDetailDialog ref="studentDetailDialog" /> -->
+  <EditUserDialog ref="editUserDialog" />
   <DeleteDialog ref="deleteDialog" />
 </template>

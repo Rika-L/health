@@ -67,7 +67,36 @@ const onSubmit = handleSubmit(async (values) => {
           <FormItem class="grid gap-0.5 relative">
             <FormLabel>用户ID</FormLabel>
             <FormControl>
-              <Input type="text" placeholder="请输入用户ID" v-bind="componentField" :disabled="isLoading" />
+              <Select v-bind="componentField" :disabled="isLoading">
+                <SelectTrigger>
+                  <SelectValue placeholder="请选择班级" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="class1">
+                      班级一
+                    </SelectItem>
+                    <SelectItem value="class2">
+                      班级二
+                    </SelectItem>
+                    <SelectItem value="class3">
+                      班级三
+                    </SelectItem>
+                    <SelectItem value="class4">
+                      班级四
+                    </SelectItem>
+                    <SelectItem value="class5">
+                      班级五
+                    </SelectItem>
+                    <SelectItem value="class6">
+                      班级六
+                    </SelectItem>
+                    <SelectItem value="class7">
+                      班级七
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </FormControl>
             <!-- <FormMessage class="absolute -bottom-5" /> -->
           </FormItem>
