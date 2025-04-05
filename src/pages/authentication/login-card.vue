@@ -26,7 +26,7 @@ const onSubmit = handleSubmit(async (values) => {
       $router.push('/dashboard')
     }
     else {
-      toast.error(`错误:${code}`, { description: msg })
+      toast.error(`错误:${code}`, { description: '用户名或密码错误' })
     }
   }
   catch (e) {

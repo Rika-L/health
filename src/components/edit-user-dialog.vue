@@ -35,6 +35,7 @@ defineExpose({
     form.username = userData.username || ''
     form.avatar = userData.avatar || ''
     form.role = userData.role || ''
+    form.password = ''
     toggleIsOpen(true)
     if (cb)
       callback.value = cb
@@ -100,7 +101,7 @@ async function handleSubmit() {
             <div class="grid grid-cols-4 items-center gap-4">
               <Label class="text-right">班级ID</Label>
               <Select v-model="form.classid" required>
-                <SelectTrigger>
+                <SelectTrigger class="col-span-3">
                   <SelectValue placeholder="请选择班级" />
                 </SelectTrigger>
                 <SelectContent>

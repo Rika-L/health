@@ -67,6 +67,15 @@ const onSubmit = handleSubmit(async (values) => {
           <FormItem class="grid gap-0.5 relative">
             <FormLabel>用户ID</FormLabel>
             <FormControl>
+              <Input type="text" placeholder="请输入用户ID" v-bind="componentField" :disabled="isLoading" />
+            </FormControl>
+            <!-- <FormMessage class="absolute -bottom-5" /> -->
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="classid" :validate-on-blur="!isFieldDirty">
+          <FormItem class="grid gap-0.5 relative">
+            <FormLabel>班级</FormLabel>
+            <FormControl>
               <Select v-bind="componentField" :disabled="isLoading">
                 <SelectTrigger>
                   <SelectValue placeholder="请选择班级" />
@@ -101,15 +110,7 @@ const onSubmit = handleSubmit(async (values) => {
             <!-- <FormMessage class="absolute -bottom-5" /> -->
           </FormItem>
         </FormField>
-        <FormField v-slot="{ componentField }" name="classid" :validate-on-blur="!isFieldDirty">
-          <FormItem class="grid gap-0.5 relative">
-            <FormLabel>班级ID</FormLabel>
-            <FormControl>
-              <Input type="text" placeholder="请输入班级ID" v-bind="componentField" :disabled="isLoading" />
-            </FormControl>
-            <!-- <FormMessage class="absolute -bottom-5" /> -->
-          </FormItem>
-        </FormField>
+
         <FormField v-slot="{ componentField }" name="password" :validate-on-blur="!isFieldDirty">
           <FormItem class="grid gap-0.5 relative">
             <FormLabel>密码</FormLabel>
