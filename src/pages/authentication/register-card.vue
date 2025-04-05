@@ -50,7 +50,7 @@ const onSubmit = handleSubmit(async (values) => {
           请填写以下信息完成注册。
         </CardDescription>
       </CardHeader>
-      <CardContent class="grid gap-6">
+      <CardContent class="grid gap-2">
         <div class="flex justify-center mb-4">
           <AvatarUpload v-model="avatarUrl" :disabled="isLoading" />
         </div>
@@ -60,7 +60,25 @@ const onSubmit = handleSubmit(async (values) => {
             <FormControl>
               <Input type="text" placeholder="请输入用户名" v-bind="componentField" :disabled="isLoading" />
             </FormControl>
-            <FormMessage class="absolute -bottom-5" />
+            <!-- <FormMessage class="absolute -bottom-5" /> -->
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="userid" :validate-on-blur="!isFieldDirty">
+          <FormItem class="grid gap-0.5 relative">
+            <FormLabel>用户ID</FormLabel>
+            <FormControl>
+              <Input type="text" placeholder="请输入用户ID" v-bind="componentField" :disabled="isLoading" />
+            </FormControl>
+            <!-- <FormMessage class="absolute -bottom-5" /> -->
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="classid" :validate-on-blur="!isFieldDirty">
+          <FormItem class="grid gap-0.5 relative">
+            <FormLabel>班级ID</FormLabel>
+            <FormControl>
+              <Input type="text" placeholder="请输入班级ID" v-bind="componentField" :disabled="isLoading" />
+            </FormControl>
+            <!-- <FormMessage class="absolute -bottom-5" /> -->
           </FormItem>
         </FormField>
         <FormField v-slot="{ componentField }" name="password" :validate-on-blur="!isFieldDirty">
@@ -69,7 +87,7 @@ const onSubmit = handleSubmit(async (values) => {
             <FormControl>
               <Input type="password" placeholder="请输入密码" v-bind="componentField" :disabled="isLoading" />
             </FormControl>
-            <FormMessage class="absolute -bottom-5" />
+            <!-- <FormMessage class="absolute -bottom-5" /> -->
           </FormItem>
         </FormField>
         <FormField v-slot="{ componentField }" name="confirmPassword" :validate-on-blur="!isFieldDirty">
@@ -78,16 +96,7 @@ const onSubmit = handleSubmit(async (values) => {
             <FormControl>
               <Input type="password" placeholder="请再次输入密码" v-bind="componentField" :disabled="isLoading" />
             </FormControl>
-            <FormMessage class="absolute -bottom-5" />
-          </FormItem>
-        </FormField>
-        <FormField v-slot="{ componentField }" name="phoneNum" :validate-on-blur="!isFieldDirty">
-          <FormItem class="grid gap-0.5 relative">
-            <FormLabel>手机号</FormLabel>
-            <FormControl>
-              <Input type="tel" placeholder="请输入手机号" v-bind="componentField" :disabled="isLoading" />
-            </FormControl>
-            <FormMessage class="absolute -bottom-5" />
+            <!-- <FormMessage class="absolute -bottom-5" /> -->
           </FormItem>
         </FormField>
         <FormField v-slot="{ componentField }" name="role" :validate-on-blur="!isFieldDirty">
@@ -100,17 +109,17 @@ const onSubmit = handleSubmit(async (values) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="1">
+                    <SelectItem value="0">
                       管理员
                     </SelectItem>
-                    <SelectItem value="2">
+                    <SelectItem value="1">
                       教师
                     </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </FormControl>
-            <FormMessage class="absolute -bottom-5" />
+            <!-- <FormMessage class="absolute -bottom-5" /> -->
           </FormItem>
         </FormField>
       </CardContent>

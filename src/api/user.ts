@@ -21,5 +21,5 @@ export function userRegister(form: RegisterForm) {
     role: Number(form.role),
     permission: 1,
   }
-  return POST('/account/register', registerData)
+  return POST('/auth/register', registerData)
 }

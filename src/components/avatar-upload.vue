@@ -44,8 +44,8 @@ async function handleFileChange(event: Event) {
     formData.append('file', file)
 
     // 使用HTTPRequest调用后端API上传文件
-    const response = await HTTPRequest<string>({
-      url: '/file/uploadAvatar',
+    const response = await HTTPRequest<{ filename: string, path: string }>({
+      url: '/upload/image',
       method: 'POST',
       data: formData,
       headers: {
@@ -56,7 +56,7 @@ async function handleFileChange(event: Event) {
     // 从响应中获取文件URL
     if (response.code === 200 && response.data) {
       toast.success('上传成功')
-      const uploadPath = response.data
+      const uploadPath = `/${response.data.path}${response.data.filename}`
       // 创建本地预览
       const reader = new FileReader()
       reader.onload = (e) => {
