@@ -5,9 +5,7 @@ export const useUserStore = defineStore('user', () => {
   const token = computed(() => userInfo.value?.token)
   const avatar = computed(() => import.meta.env.VITE_REQUEST_BASE_URL + userInfo.value?.avatar)
   const IS_LOGIN = computed(() => !!token.value)
-  const auth = computed(() => {
-    return userInfo.value?.role === 'ROLE_ADMIN' ? 'admin' : 'teacher'
-  })
+  const auth = computed(() => userInfo.value?.role)
   function setUserInfo(user: UserInfo | null) {
     userInfo.value = user
   }

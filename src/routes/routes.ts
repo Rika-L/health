@@ -21,11 +21,13 @@ const routes: RouterOptions['routes'] = [
         path: '/swiper',
         name: 'Swiper',
         component: () => import('@/pages/swiper/index.vue'),
+        meta: { auth: ['ROLE_ADMIN'] },
       },
       {
         path: '/announcement',
         name: 'Announcement',
         component: () => import('@/pages/announcement/index.vue'),
+        meta: { auth: ['ROLE_ADMIN'] },
       },
       {
         path: '/sport',

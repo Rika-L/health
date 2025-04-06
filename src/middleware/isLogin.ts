@@ -18,7 +18,7 @@ router.beforeEach((to) => {
   }
 
   const requiredAuth = to.meta.auth as string[] | undefined
-  if (requiredAuth && !requiredAuth.includes(userStore.auth)) {
+  if (requiredAuth && !requiredAuth.includes(userStore.auth || '')) {
     return { name: 'NotAuthorized' }
   }
 })
