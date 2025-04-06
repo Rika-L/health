@@ -9,7 +9,7 @@ injectHttpStatusErrorHandler((message, statusCode) => {
   if (statusCode === 401) {
     const useStore = useUserStore()
     useStore.setUserInfo(null)
-    $router.push({ name: 'Authentication' })
+    $router.push({ name: 'NotLogin' })
   }
   toast(String(statusCode), { description: message })
 })

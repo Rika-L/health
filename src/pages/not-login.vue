@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 const $router = useRouter()
 
-function goHome() {
-  $router.push({ name: 'Dashboard' })
+function goLogin() {
+  $router.push({ name: 'Authentication' })
 }
 </script>
 
@@ -11,20 +11,20 @@ function goHome() {
     <Card class="w-full max-w-md mx-auto text-center shadow-lg">
       <CardHeader>
         <CardTitle class="text-6xl font-bold text-primary">
-          403
+          401
         </CardTitle>
       </CardHeader>
       <CardContent>
         <p class="text-xl mb-4">
-          无权访问
+          登录过期
         </p>
         <p class="text-muted-foreground mb-6">
-          您无权访问此页面
+          您的登录已过期，请重新登录
         </p>
       </CardContent>
       <CardFooter class="flex justify-center">
-        <Button class="px-6" @click="goHome">
-          返回首页
+        <Button class="px-6" @click="goLogin">
+          重新登录
         </Button>
       </CardFooter>
     </Card>

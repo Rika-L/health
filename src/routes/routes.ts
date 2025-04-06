@@ -18,6 +18,16 @@ const routes: RouterOptions['routes'] = [
         component: () => import('@/pages/information/index.vue'),
       },
       {
+        path: '/swiper',
+        name: 'Swiper',
+        component: () => import('@/pages/swiper/index.vue'),
+      },
+      {
+        path: '/announcement',
+        name: 'Announcement',
+        component: () => import('@/pages/announcement/index.vue'),
+      },
+      {
         path: '/sport',
         name: 'Sport',
         component: () => import('@/pages/sport.vue'),
@@ -29,8 +39,10 @@ const routes: RouterOptions['routes'] = [
     name: 'Authentication',
     component: () => import('@/pages/authentication/index.vue'),
   },
-  { path: '/401', name: 'NotAuthorized', component: () => import('@/pages/not-auth.vue') },
+  { path: '/403', name: 'NotAuthorized', component: () => import('@/pages/not-auth.vue') },
+  { path: '/401', name: 'NotLogin', component: () => import('@/pages/not-login.vue') },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/pages/not-found.vue') },
+
 ]
 
 export default routes

@@ -4,7 +4,12 @@ import { useUserStore } from '@/store/user'
 router.beforeEach((to) => {
   const userStore = useUserStore()
 
-  if (!userStore.IS_LOGIN && to.name !== 'Authentication') {
+  if (
+    !userStore.IS_LOGIN
+    && to.name !== 'Authentication'
+    && to.name !== 'NotFound'
+    && to.name !== 'NotAuthorized'
+    && to.name !== 'NotLogin') {
     return { name: 'Authentication' }
   }
 
