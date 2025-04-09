@@ -1,4 +1,4 @@
-import { Bell, Image, SquareTerminal, User } from 'lucide-vue-next'
+import { Bell, Image, MessageCircle, SquareTerminal, User } from 'lucide-vue-next'
 
 // Menu items.
 const menuItems: { title: string, url: string, icon: any, auth?: string[] }[] = [
@@ -11,6 +11,11 @@ const menuItems: { title: string, url: string, icon: any, auth?: string[] }[] = 
     title: '用户信息管理',
     url: '/information',
     icon: User,
+  },
+  {
+    title: '论坛管理',
+    url: '/forum',
+    icon: MessageCircle,
   },
   {
     title: '轮播图管理',

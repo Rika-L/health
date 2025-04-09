@@ -30,6 +30,12 @@ const routes: RouterOptions['routes'] = [
         meta: { auth: ['ROLE_ADMIN'] },
       },
       {
+        path: '/forum',
+        name: 'Forum',
+        component: () => import('@/pages/forum.vue'),
+        meta: { auth: ['ROLE_ADMIN'] },
+      },
+      {
         path: '/sport',
         name: 'Sport',
         component: () => import('@/pages/sport.vue'),

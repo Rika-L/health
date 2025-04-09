@@ -37,6 +37,7 @@ declare module 'vue' {
     ChartSingleTooltip: typeof import('./components/ui/chart/ChartSingleTooltip.vue')['default']
     ChartTooltip: typeof import('./components/ui/chart/ChartTooltip.vue')['default']
     DataTable: typeof import('./components/data-table.vue')['default']
+    DataTableOrigin: typeof import('./components/data-table-origin.vue')['default']
     DeleteDialog: typeof import('./components/delete-dialog.vue')['default']
     Dialog: typeof import('./components/ui/dialog/Dialog.vue')['default']
     DialogClose: typeof import('./components/ui/dialog/DialogClose.vue')['default']
