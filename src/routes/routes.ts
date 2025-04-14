@@ -36,6 +36,11 @@ const routes: RouterOptions['routes'] = [
         meta: { auth: ['ROLE_ADMIN'] },
       },
       {
+        path: '/exam',
+        name: 'Exam',
+        component: () => import('@/pages/exam.vue'),
+      },
+      {
         path: '/sport',
         name: 'Sport',
         component: () => import('@/pages/sport.vue'),
